@@ -1,0 +1,56 @@
+name: Build and deploy JAR app to Azure Web App - mamnau-web
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read  # required for actions/checkout
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'   # or 'temurin'
+
+      - name: Build with Maven (subfolder)
+        run: mvn -f mamnau/pom.xml -DskipTests package
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: mamnau/target/*.jar   # <-- JAR nằm trong mamnau/target
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write    # required for azure/login (OIDC)
+      contents: read
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app
+          path: .        # tải JAR về thư mục hiện tại
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_AB2E33E2B1A24BF9B4954911CEB83A47 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D09E330756824F418D5CFDA3D0EF321F }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1F1716C26F58461584179EC3BFAD11FC }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: mamnau-web
+          slot-name: Production
+          package: '*.jar'            # JAR vừa download nằm ở thư mục hiện tại
