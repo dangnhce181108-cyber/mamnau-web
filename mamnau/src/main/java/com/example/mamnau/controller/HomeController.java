@@ -15,7 +15,7 @@ public class HomeController {
 
     private final ProductService productService;
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String landing(Model model) {
         model.addAttribute("brandName", "Mầm Nâu");
         model.addAttribute("tagline", "phân hữu cơ từ bã cà phê");
