@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${title} ?: 'Về chúng tôi — Mầm Nâu'">Về chúng tôi — Mầm Nâu</title>
+    <meta name="description"
+          th:content="${desc} ?: 'Giới thiệu về thương hiệu Mầm Nâu: hành trình biến bã cà phê thành phân hữu cơ, sứ mệnh và tầm nhìn xanh.'"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
+    <style>
+        :root { --bg:#f7fbf7; --surface:#fff; --text:#243522; --muted:#5b6b57; --primary:#2e7d32; --primary-200:#a8d5b8; --accent:#6b4f3b; --accent-100:#efe5db; --shadow:0 10px 25px rgba(0,0,0,.06); --radius:16px; --maxw:1140px; }
+        *{box-sizing:border-box} html,body{margin:0;padding:0}
+        body{font-family:"Be Vietnam Pro",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+             background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100)); color:var(--text); line-height:1.6}
+        a{color:inherit;text-decoration:none}
+        .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+/* NAVBAR */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
+      backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+      background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
+    .brand span{letter-spacing:.3px}
+    .brand small{font-weight:600;color:var(--accent);margin-left:6px}
+    .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+    .nav a{font-weight:600;}.nav a:hover{color:var(--primary)}
+    .cta{display:inline-flex;align-items:center;gap:10px;background:var(--primary);
+      color:#fff;padding:10px 16px;border-radius:12px;box-shadow:0 8px 20px var(--ring)}
+    .menu-btn{display:none;border:0;background:transparent;font-size:26px}
+
+        /* HERO */
+        .hero{padding:64px 0;text-align:center}
+        .hero h1{font-size:clamp(28px,5vw,44px);margin:0}
+        .hero p{color:var(--muted);max-width:65ch;margin:10px auto 0}
+
+        /* SECTIONS */
+        .section{padding:48px 0}
+        .section h2{font-size:28px;margin-bottom:10px;text-align:center}
+        .section p.lead{text-align:center;max-width:68ch;margin:0 auto 24px;color:var(--muted)}
+        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+        .card{background:var(--surface);padding:20px;border-radius:16px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.06)}
+
+        /* VALUES */
+        .values{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+        .value{background:var(--surface);padding:16px;border-radius:14px;border:1px solid rgba(0,0,0,.06);text-align:center;box-shadow:var(--shadow)}
+
+        /* TEAM */
+        .team{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
+        .member{background:#fff;padding:16px;border-radius:14px;text-align:center;box-shadow:var(--shadow)}
+        .avatar{width:100px;height:100px;border-radius:50%;background:#eee;margin:0 auto 10px;display:grid;place-items:center;font-weight:700;color:#888}
+
+        /* FOOTER (fragment) */
+        footer{background:#0e1a0f;color:#d7e3d7;margin-top:40px}
+        .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
+        .copyright{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:#a6b5a6;font-size:14px}
+
+        @media (max-width:900px){ .grid-2{grid-template-columns:1fr} .values{grid-template-columns:1fr} .footer-wrap{grid-template-columns:1fr} }
+        @media (max-width:680px){
+          .nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px;flex-direction:column}
+          .menu-btn{display:block}
+        }
+
+        /* Ảnh trong thẻ .card của trang About */
+.card img {
+  width: 100%;              /* ảnh chiếm hết chiều ngang card */
+  max-width: 450px;         /* giới hạn tối đa để không quá to */
+  height: auto;             /* tự động tỉ lệ chiều cao */
+  display: block;
+  margin: 0 auto;           /* căn giữa trong card */
+  border-radius: 12px;      /* bo nhẹ góc */
+  object-fit: cover;        /* giữ tỉ lệ, không méo ảnh */
+}
+    </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
+
+<!-- HERO -->
+<header class="hero">
+    <h1>Về <span th:text="${brandName}">Mầm Nâu</span></h1>
+    <p>Hành trình biến bã cà phê thành mầm xanh cho đất Việt</p>
+</header>
+
+<!-- STORY -->
+<section class="section">
+    <div class="container grid-2">
+        <div>
+            <h2>Câu chuyện thương hiệu</h2>
+            <p>
+                <span th:text="${brandName}">Mầm Nâu</span> ra đời từ một ý tưởng giản dị:
+                <strong>tái chế bã cà phê</strong> thành phân hữu cơ giàu dinh dưỡng.
+                Chúng tôi tin rằng mỗi tách cà phê không chỉ mang lại năng lượng cho con người,
+                mà phần bã còn có thể nuôi dưỡng những mầm sống mới cho đất, cây, và môi trường.
+            </p>
+            <p>
+                Tên gọi “<span th:text="${brandName}">Mầm Nâu</span>” gợi nhớ màu nâu ấm áp của cà phê,
+                và mầm xanh của sự sống — kết nối giữa <em>văn hoá cà phê Việt</em> và
+                <em>sự phát triển bền vững</em>.
+            </p>
+        </div>
+        <!-- Ảnh minh hoạ -->
+        <div class="card">
+            <img src="/img/aboutusminhhoa.png" alt="Bã cà phê → phân hữu cơ → cây xanh">
+        </div>
+    </div>
+</section>
+
+<!-- MISSION / VISION -->
+<section class="section" style="background:#f0f5f1">
+    <div class="container">
+        <h2>Sứ mệnh &amp; Tầm nhìn</h2>
+        <p class="lead">Chúng tôi hướng đến một tương lai xanh hơn qua những bước đi nhỏ nhưng bền vững.</p>
+        <div class="values">
+            <div class="value">
+                🌍 <br/><strong>Sứ mệnh</strong><br/>Giảm thiểu rác thải cà phê và mang lại giá trị mới cho cộng đồng.
+            </div>
+            <div class="value">
+                🌱 <br/><strong>Tầm nhìn</strong><br/>Trở thành thương hiệu Việt tiên phong trong phân hữu cơ từ phụ phẩm.
+            </div>
+            <div class="value">
+                🤝 <br/><strong>Giá trị</strong><br/>Minh bạch, trách nhiệm môi trường và gần gũi người tiêu dùng.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TEAM -->
+<section class="section">
+    <div class="container">
+        <h2>Nhóm dự án</h2>
+        <p class="lead">Dự án nhỏ, bắt đầu từ một nhóm trẻ yêu cà phê và quan tâm môi trường.</p>
+        <div class="team">
+            <div class="member">
+                <div class="avatar">IT</div>
+                <strong>Thành viên IT</strong>
+                <p>Xây dựng hệ thống website &amp; cơ sở dữ liệu.</p>
+            </div>
+            <div class="member">
+                <div class="avatar">🎨</div>
+                <strong>Thiết kế đồ hoạ</strong>
+                <p>Tạo bộ nhận diện thương hiệu <span th:text="${brandName}">Mầm Nâu</span>.</p>
+            </div>
+            <div class="member">
+                <div class="avatar">📣</div>
+                <strong>Truyền thông</strong>
+                <p>Lan toả thông điệp xanh đến cộng đồng.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<th:block th:replace="~{group5_template/footer :: footer}"></th:block>
+
+<script>
+    // Menu mobile
+    const menuBtn = document.getElementById("menuBtn");
+    const navMenu = document.getElementById("navMenu");
+    menuBtn?.addEventListener("click", () => {
+      const visible = getComputedStyle(navMenu).display !== "none";
+      navMenu.style.display = visible ? "none" : "flex";
+    });
+    document.getElementById("year")?.textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

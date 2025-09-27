@@ -1,0 +1,33 @@
+<footer th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
+  <div class="container footer-wrap">
+    <div>
+      <div class="brand" style="margin-bottom: 8px">
+        <span class="logo">🌱</span><span th:text="${brandName}">Mầm Nâu</span>
+      </div>
+      <p style="margin-top: 0; opacity: 0.9">
+        Thương hiệu Việt với sứ mệnh biến bã cà phê thành giá trị cho đất và cộng đồng.
+      </p>
+    </div>
+    <nav>
+      <strong>Điều hướng</strong>
+      <ul style="list-style:none;padding:0;margin:10px 0;display:grid;gap:8px;">
+        <li><a th:href="@{/home#san-pham}">Sản phẩm</a></li>
+        <li><a th:href="@{/faq}">FAQ</a></li>
+        <li><a th:href="@{/home#quy-trinh}">Quy trình</a></li>
+        <li><a th:href="@{/home#loi-ich}">Lợi ích</a></li>
+        <li><a th:href="@{/contact}">Liên hệ</a></li>
+      </ul>
+    </nav>
+    <div>
+      <strong>Liên lạc</strong>
+      <ul style="list-style:none;padding:0;margin:10px 0;display:grid;gap:8px;">
+        <li>Email: <a href="mailto:hello@mamnau.vn">hello@mamnau.vn</a></li>
+        <li>Facebook: <a href="#">@mamnau</a></li>
+        <li>Địa chỉ: Nguyễn Văn Cừ Nối Dài, Cần Thơ</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container copyright">
+    © <span id="year"></span> <span th:text="${brandName}">Mầm Nâu</span>. Vì một hành tinh nhiều mảng xanh hơn.
+  </div>
+</footer>

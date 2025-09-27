@@ -1,0 +1,278 @@
+<nav class="nav" th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml">
+  <style>
+    /* ===== Global Contact Modal ===== */
+    #g5ContactBackdrop{
+      position:fixed; inset:0; background:rgba(0,0,0,.35);
+      display:none; align-items:center; justify-content:center;
+      z-index:9999; padding:16px;
+    }
+    #g5ContactModal{
+      position:relative;
+      background:#fff; width:100%; max-width:560px;
+      border-radius:16px; padding:18px 16px;
+      box-shadow:0 10px 25px rgba(0,0,0,.12);
+      border:1px solid rgba(0,0,0,.06);
+      animation:g5Pop .18s ease-out;
+      font-family:inherit;
+    }
+    #g5ContactModal h3{margin:0 0 8px; font-size:20px}
+    #g5ContactModal .row{display:grid; gap:10px; margin:10px 0}
+    #g5ContactModal input,#g5ContactModal textarea{
+      width:100%; padding:12px 14px;
+      border:1px solid #cfe4d2; border-radius:12px; font:inherit;
+      transition:border-color .2s, box-shadow .2s, background .2s;
+    }
+    #g5ContactModal textarea{min-height:120px}
+    #g5ContactModal .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:12px 16px; border-radius:12px;
+      font-weight:800; cursor:pointer; border:2px solid transparent
+    }
+    #g5ContactModal .btn-primary{background:#2e7d32; color:#fff}
+    #g5ContactModal .btn-outline{background:#fff; color:#2e7d32; border-color:#2e7d32}
+    #g5Toast{
+      position:fixed; left:50%; top:14px; transform:translateX(-50%);
+      background:#0f5132; color:#d1f7e1; padding:12px 16px;
+      border-radius:10px; border:1px solid #badbcc;
+      box-shadow:0 10px 25px rgba(0,0,0,.12);
+      display:none; z-index:10000; font-weight:700
+    }
+    #g5Toast.error{background:#842029; color:#ffe0e0; border-color:#f5c2c7}
+    @keyframes g5Pop{from{transform:scale(.98);opacity:.5} to{transform:scale(1);opacity:1}}
+
+    /* ===== Validation styles ===== */
+    #g5ContactModal .err{font-size:12px; color:#7a271a; display:none; margin-top:4px}
+    #g5ContactModal .hint{font-size:12px; color:#577a59}
+    #g5ContactModal input[aria-invalid="true"],
+    #g5ContactModal textarea[aria-invalid="true"]{
+      border-color:#e76a5f; box-shadow:0 0 0 3px rgba(231,106,95,.18); background:#fff7f6;
+    }
+  </style>
+
+  <div class="container nav-wrap">
+    <a class="brand" th:href="@{/home}">
+      <span class="logo">🌱</span>
+      <span th:text="${brandName}">Mầm Nâu</span>
+      <small th:text="${tagline}">phân hữu cơ từ bã cà phê</small>
+    </a>
+
+    <button class="menu-btn" aria-label="Mở menu" id="menuBtn">☰</button>
+
+    <ul id="navMenu">
+      <li><a th:href="@{/home}">Trang chủ</a></li>
+      <li><a th:href="@{/about}">Về chúng tôi</a></li>
+      <li><a th:href="@{/blog}">Blog</a></li>
+      <li><a th:href="@{/contact}">Liên hệ</a></li>
+    </ul>
+
+    <!-- CTA mở modal toàn site -->
+    <a class="cta" href="#" id="globalOrderBtn">Đặt hàng ngay</a>
+  </div>
+
+  <!-- ===== Modal đặt hàng ===== -->
+  <div id="g5ContactBackdrop" aria-hidden="true">
+    <div id="g5ContactModal" role="dialog" aria-modal="true" aria-labelledby="g5ContactTitle">
+      <h3 id="g5ContactTitle">Liên hệ đặt hàng</h3>
+      <form id="g5ContactForm" novalidate>
+        <div class="row">
+          <div>
+            <input id="g5Name" placeholder="Họ tên" autocomplete="name" required aria-invalid="false"/>
+            <div class="hint">Nhập ít nhất 2 ký tự.</div>
+            <div class="err" id="err-g5Name">Vui lòng nhập họ tên hợp lệ.</div>
+          </div>
+          <div>
+            <input id="g5Phone" type="tel" inputmode="tel"
+                   placeholder="Số điện thoại (Zalo)"
+                   pattern="^(\+?84|0)(3|5|7|8|9)\d{8}$"
+                   aria-invalid="false"/>
+            <div class="hint">Định dạng VN: 0xxxxxxxxx hoặc +84xxxxxxxxx.</div>
+            <div class="err" id="err-g5Phone">Số điện thoại VN chưa đúng.</div>
+          </div>
+          <div>
+            <input id="g5Email" type="email" placeholder="Email" autocomplete="email" aria-invalid="false"/>
+            <div class="err" id="err-g5Email">Email chưa đúng định dạng.</div>
+          </div>
+          <div>
+            <textarea id="g5Message" rows="4" placeholder="Ghi chú: địa chỉ, thời gian nhận…"
+                      aria-invalid="false"></textarea>
+            <div class="hint">Nội dung ≥ 10 ký tự sẽ giúp tư vấn nhanh hơn.</div>
+            <div class="err" id="err-g5Message">Vui lòng nhập nội dung (≥ 10 ký tự).</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; justify-content:flex-end">
+          <button class="btn btn-outline" type="button" id="g5Close">Đóng</button>
+          <button class="btn btn-primary" type="submit" id="g5Submit">Gửi yêu cầu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="g5Toast"></div>
+
+  <script>
+    (function(){
+      if (window.__g5ContactInit) return;
+      window.__g5ContactInit = true;
+
+      // move modal/toast ra body để tránh ảnh hưởng nav sticky
+      ['g5ContactBackdrop','g5Toast'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.parentElement !== document.body) {
+          document.body.appendChild(el);
+        }
+      });
+
+      const menuBtn = document.getElementById("menuBtn");
+      const navMenu = document.getElementById("navMenu");
+      menuBtn?.addEventListener("click", () => {
+        const visible = getComputedStyle(navMenu).display !== "none";
+        navMenu.style.display = visible ? "none" : "flex";
+      });
+
+      const orderBtn = document.getElementById("globalOrderBtn");
+      const backdrop = document.getElementById("g5ContactBackdrop");
+      const closeBtn  = document.getElementById("g5Close");
+      const form = document.getElementById("g5ContactForm");
+      const btnSubmit = document.getElementById("g5Submit");
+      const toast = document.getElementById("g5Toast");
+
+      // ===== Validation helpers =====
+      const nameEl = document.getElementById('g5Name');
+      const phoneEl = document.getElementById('g5Phone');
+      const emailEl = document.getElementById('g5Email');
+      const msgEl = document.getElementById('g5Message');
+      const minName = 2, minMsg = 10;
+      const phoneRe = /^(\+?84|0)(3|5|7|8|9)\d{8}$/;
+
+      function showErr(el, id){ el.setAttribute('aria-invalid','true'); const e = document.getElementById(id); e && (e.style.display='block'); }
+      function clearErr(el, id){ el.setAttribute('aria-invalid','false'); const e = document.getElementById(id); e && (e.style.display='none'); }
+
+      function validateName(){
+        const ok = nameEl.value.trim().length >= minName;
+        ok ? clearErr(nameEl,'err-g5Name') : showErr(nameEl,'err-g5Name');
+        return ok;
+      }
+      function validateEmail(){
+        const v = emailEl.value.trim();
+        if(!v){ clearErr(emailEl,'err-g5Email'); return true; } // optional
+        const ok = emailEl.checkValidity(); // HTML5 email
+        ok ? clearErr(emailEl,'err-g5Email') : showErr(emailEl,'err-g5Email');
+        return ok;
+      }
+      function validatePhone(){
+        const v = phoneEl.value.trim();
+        if(!v){ clearErr(phoneEl,'err-g5Phone'); return true; } // optional
+        const ok = phoneRe.test(v);
+        ok ? clearErr(phoneEl,'err-g5Phone') : showErr(phoneEl,'err-g5Phone');
+        return ok;
+      }
+      function validateMsg(){
+        const v = msgEl.value.trim();
+        if(!v){ clearErr(msgEl,'err-g5Message'); return true; } // optional
+        const ok = v.length >= minMsg;
+        ok ? clearErr(msgEl,'err-g5Message') : showErr(msgEl,'err-g5Message');
+        return ok;
+      }
+      function validateAtLeastEmailOrPhone(){
+        const hasAny = emailEl.value.trim() || phoneEl.value.trim();
+        if(!hasAny){
+          // gợi ý: đánh dấu cả hai
+          showErr(emailEl,'err-g5Email'); showErr(phoneEl,'err-g5Phone');
+        }
+        return !!hasAny;
+      }
+
+      [nameEl,emailEl,phoneEl,msgEl].forEach(el=>{
+        el.addEventListener('input', ()=>{
+          if(el===nameEl) validateName();
+          if(el===emailEl) validateEmail();
+          if(el===phoneEl) validatePhone();
+          if(el===msgEl) validateMsg();
+        });
+        el.addEventListener('blur', ()=> el.dispatchEvent(new Event('input')));
+      });
+
+      function showToast(msg, isError=false){
+        toast.textContent = msg;
+        toast.classList.toggle('error', !!isError);
+        toast.style.display = 'block';
+        setTimeout(()=> toast.style.display='none', 2400);
+      }
+
+      function openModal(){
+        backdrop.style.display = "flex";
+        backdrop.setAttribute("aria-hidden","false");
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+
+        const productTitle =
+          document.querySelector(".title")?.textContent ||
+          document.querySelector('meta[property="og:title"]')?.getAttribute('content') ||
+          document.querySelector('h1')?.textContent ||
+          document.title || "Sản phẩm Mầm Nâu";
+        form.dataset.product = productTitle.trim();
+
+        const qty = document.getElementById("qty");
+        form.dataset.quantity = qty ? (parseInt(qty.value,10)||1) : 1;
+      }
+      function closeModal(){
+        backdrop.style.display = "none";
+        backdrop.setAttribute("aria-hidden","true");
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        form.reset();
+        // clear errors
+        [nameEl,emailEl,phoneEl,msgEl].forEach(el=> el.setAttribute('aria-invalid','false'));
+        ['err-g5Name','err-g5Email','err-g5Phone','err-g5Message'].forEach(id=>{
+          const e=document.getElementById(id); e && (e.style.display='none');
+        });
+      }
+
+      orderBtn?.addEventListener('click', e=>{ e.preventDefault(); openModal(); });
+      closeBtn?.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', e=> { if(e.target===backdrop) closeModal(); });
+
+      form.addEventListener('submit', async e=>{
+        e.preventDefault();
+
+        const okName = validateName();
+        const okEmail = validateEmail();
+        const okPhone = validatePhone();
+        const okAny = validateAtLeastEmailOrPhone();
+        const okMsg  = validateMsg(); // không bắt buộc, chỉ cảnh báo nếu < 10
+
+        if(!(okName && okEmail && okPhone && okAny)){
+          showToast("Vui lòng kiểm tra lại thông tin.", true);
+          (document.querySelector('#g5ContactModal [aria-invalid="true"]')||nameEl).focus();
+          return;
+        }
+
+        const name     = nameEl.value.trim();
+        const phone    = phoneEl.value.trim();
+        const email    = emailEl.value.trim();
+        const message  = msgEl.value.trim();
+        const product  = form.dataset.product || "Sản phẩm Mầm Nâu";
+        const quantity = parseInt(form.dataset.quantity||"1",10) || 1;
+
+        btnSubmit.disabled = true; const old = btnSubmit.textContent; btnSubmit.textContent = "Đang gửi...";
+
+        try{
+          const res = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone, email, message, quantity, product })
+          });
+          const data = await res.json().catch(()=> ({}));
+          if(res.ok && data.ok){
+            showToast("✅ Đã gửi yêu cầu!"); closeModal();
+          }else{
+            showToast("❌ Gửi thất bại, thử lại!", true);
+          }
+        }catch(err){
+          showToast("❌ Lỗi kết nối, thử lại sau!", true);
+        }finally{
+          btnSubmit.disabled = false; btnSubmit.textContent = old;
+        }
+      });
+    })();
+  </script>
+</nav>

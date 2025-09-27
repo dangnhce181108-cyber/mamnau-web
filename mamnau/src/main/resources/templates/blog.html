@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${title} ?: 'Tin tức / Blog — Mầm Nâu'">Tin tức / Blog — Mầm Nâu</title>
+    <meta name="description" content="Blog Mầm Nâu: mẹo làm vườn, tái chế bã cà phê, hướng dẫn sử dụng phân hữu cơ, câu chuyện bền vững." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root{--bg:#f7fbf7;--surface:#fff;--text:#243522;--muted:#5b6b57;--primary:#2e7d32;--primary-200:#a8d5b8;--accent:#6b4f3b;--accent-100:#efe5db;--ring:rgba(46,125,50,.25);--shadow:0 10px 25px rgba(0,0,0,.06);--radius:16px;--maxw:1140px}
+        *{box-sizing:border-box}html,body{margin:0;padding:0}
+        body{font-family:"Be Vietnam Pro",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));color:var(--text);line-height:1.6}
+        a{color:inherit;text-decoration:none}.container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+/* NAVBAR */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
+      backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+      background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
+    .brand span{letter-spacing:.3px}
+    .brand small{font-weight:600;color:var(--accent);margin-left:6px}
+    .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+    .nav a{font-weight:600;}.nav a:hover{color:var(--primary)}
+    .cta{display:inline-flex;align-items:center;gap:10px;background:var(--primary);
+      color:#fff;padding:10px 16px;border-radius:12px;box-shadow:0 8px 20px var(--ring)}
+    .menu-btn{display:none;border:0;background:transparent;font-size:26px}
+
+        .hero{padding:56px 0 18px;text-align:center}.hero h1{font-size:clamp(28px,5vw,44px);margin:0}.hero p{color:var(--muted);max-width:70ch;margin:10px auto 0}
+        .tools{padding:8px 0 24px}.tools-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+        .search{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;box-shadow:var(--shadow)}
+        .search input{flex:1;border:0;outline:none;font-size:16px}
+        .cats{display:flex;gap:8px;flex-wrap:wrap}.chip{background:#e9f5ec;border:1px solid #d6ebdb;color:#2d5b31;padding:8px 12px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer}
+        .chip.active{box-shadow:0 0 0 4px rgba(46,125,50,.08)}
+        .grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+        .posts{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+        .post{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+        .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);display:grid;place-items:center;color:#3a2d22;font-weight:700}
+        .post .content{padding:14px}.meta{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+        .post h3{margin:8px 0 6px;font-size:18px}.excerpt{color:var(--muted)}.read{margin-top:auto;padding:14px}
+        .side .card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:16px;box-shadow:var(--shadow);padding:14px;margin-bottom:14px}
+        .tag-cloud{display:flex;flex-wrap:wrap;gap:8px}.tag{background:#f3efe9;color:#6b4f3b;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+        .pager{display:flex;justify-content:center;gap:8px;margin:16px 0}
+        .page{padding:8px 12px;border-radius:10px;border:1px solid #cfe4d2;background:#fff;cursor:pointer}
+        .page.active{background:#e9f5ec;border-color:#2e7d32}
+        footer{background:#0e1a0f;color:#d7e3d7;margin-top:40px}
+        .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
+        .copyright{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:#a6b5a6;font-size:14px}
+        @media (max-width:1060px){.posts{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+        @media (max-width:680px){.nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#ffffff;border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px;flex-direction:column}.menu-btn{display:block}}
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
+
+<!-- HERO -->
+<header class="hero">
+    <h1>Tin tức / Blog</h1>
+    <p>Chia sẻ kiến thức làm vườn, mẹo tái chế bã cà phê và câu chuyện bền vững từ Mầm Nâu.</p>
+</header>
+
+<!-- TOOLS -->
+<section class="tools">
+    <div class="container tools-wrap">
+        <!-- tìm kiếm giữ cat và size, reset về trang 0 -->
+        <form class="search" th:action="@{/blog}" method="get">
+            <span>🔎</span>
+            <input id="search" name="q" th:value="${q}" placeholder="Tìm bài viết: bã cà phê, trồng rau, compost…"/>
+            <input type="hidden" name="cat" th:value="${cat}"/>
+            <input type="hidden" name="page" value="0"/>
+            <input type="hidden" name="size" th:value="${posts.size}"/>
+        </form>
+
+        <!-- chip danh mục -->
+        <div class="cats" id="cats">
+            <a class="chip"
+               th:classappend="${cat}==null?' active'"
+               th:href="@{/blog(page=0, size=${posts.size})}">Tất cả</a>
+
+            <a class="chip"
+               th:each="c : ${categories}"
+               th:text="${c.label}"
+               th:classappend="${cat}==${c}?' active'"
+               th:href="@{/blog(cat=${c}, page=0, size=${posts.size})}"></a>
+        </div>
+    </div>
+</section>
+
+<!-- GRID -->
+<section class="container grid">
+    <!-- POSTS LIST -->
+    <main class="posts" id="postList">
+        <article class="post" th:each="p : ${posts.content}">
+            <a th:href="@{/blog/{slug}(slug=${p.slug})}">
+                <div class="thumb" th:if="${p.coverUrl==null}">Ảnh minh hoạ</div>
+                <img class="thumb" th:if="${p.coverUrl!=null}" th:src="${p.coverUrl}" alt=""
+                     style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover"/>
+            </a>
+            <div class="content">
+                <div class="meta">
+                    <span>📅 <span th:text="${#temporals.format(p.publishedAt, 'dd/MM/yyyy')}">--/--/----</span></span>
+                    <span>•</span>
+                    <span th:text="${p.category.label}">Danh mục</span>
+                </div>
+                <h3><a th:href="@{/blog/{slug}(slug=${p.slug})}" th:text="${p.title}">Tiêu đề</a></h3>
+                <p class="excerpt" th:text="${p.excerpt}">Mô tả ngắn…</p>
+            </div>
+            <div class="read">
+                <a class="cta" th:href="@{/blog/{slug}(slug=${p.slug})}">Đọc tiếp →</a>
+            </div>
+        </article>
+
+        <div th:if="${posts.totalElements == 0}" style="grid-column:1/-1;opacity:.8">
+            Không tìm thấy bài phù hợp.
+        </div>
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="side">
+        <div class="card" th:if="${posts.content.size()>0}">
+            <h3>Bài viết nổi bật</h3>
+            <ul style="list-style:none;padding:0;margin:10px 0;display:grid;gap:8px">
+                <li th:each="p,iter : ${posts.content}" th:if="${iter.index < 3}">
+                    <a th:href="@{/blog/{slug}(slug=${p.slug})}" th:text="${p.title}">Bài viết</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Chủ đề</h3>
+            <div class="tag-cloud">
+                <a class="tag" th:each="c : ${categories}" th:text="${c.label}"
+                   th:href="@{/blog(cat=${c}, page=0, size=${posts.size})}"></a>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Nhận bài mới</h3>
+            <form onsubmit="return false" id="subForm" style="display:grid;gap:8px">
+                <input id="subEmail" type="email" placeholder="Email của bạn" required
+                       style="padding:10px 12px;border:1px solid #cfe4d2;border-radius:10px;"/>
+                <button class="cta">Đăng ký</button>
+            </form>
+        </div>
+    </aside>
+</section>
+
+<!-- PAGINATION -->
+<div class="container pager" th:if="${posts.totalPages > 1}">
+    <a class="page"
+       th:classappend="${posts.first} ? ' disabled'"
+       th:href="${posts.first} ? '#'
+             : @{/blog(page=${posts.number-1}, q=${q}, cat=${cat}, size=${posts.size})}">
+        «
+    </a>
+
+    <a class="page"
+       th:each="p : ${#numbers.sequence(0, posts.totalPages-1)}"
+       th:text="${p+1}"
+       th:classappend="${p}==${posts.number} ? ' active'"
+       th:href="@{/blog(page=${p}, q=${q}, cat=${cat}, size=${posts.size})}">
+    </a>
+
+    <a class="page"
+       th:classappend="${posts.last} ? ' disabled'"
+       th:href="${posts.last} ? '#'
+             : @{/blog(page=${posts.number+1}, q=${q}, cat=${cat}, size=${posts.size})}">
+        »
+    </a>
+</div>
+
+<!-- FOOTER -->
+<th:block th:replace="~{group5_template/footer :: footer}"></th:block>
+
+<script>
+    const menuBtn = document.getElementById("menuBtn");
+    const navMenu = document.getElementById("navMenu");
+    menuBtn?.addEventListener("click", () => {
+      const visible = getComputedStyle(navMenu).display !== "none";
+      navMenu.style.display = visible ? "none" : "flex";
+    });
+    const y = document.getElementById("year"); if (y) y.textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

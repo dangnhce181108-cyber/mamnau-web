@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${title} ?: 'Mầm Nâu — Chi tiết sản phẩm'">Mầm Nâu — Chi tiết sản phẩm</title>
+  <meta name="description" th:content="${desc} ?: 'Trang chi tiết sản phẩm Mầm Nâu'"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{--bg:#f7fbf7;--surface:#fff;--text:#243522;--muted:#5b6b57;--primary:#2e7d32;--primary-200:#a8d5b8;--accent:#6b4f3b;--accent-100:#efe5db;--ring:rgba(46,125,50,.25);--shadow:0 10px 25px rgba(0,0,0,.06);--radius:16px;--maxw:980px}
+    *{box-sizing:border-box} html,body{margin:0;padding:0}
+    body{font-family:"Be Vietnam Pro",system-ui,-apple-system,Segoe UI,Roboto,Arial,"Helvetica Neue",sans-serif;background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));color:var(--text);line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
+    .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+    .nav a{font-weight:600;color:var(--muted)} .nav a:hover{color:var(--primary)}
+    .menu-btn{display:none;border:0;background:transparent;font-size:26px}
+    .breadcrumbs{font-size:14px;color:var(--muted);padding:12px 0;display:flex;align-items:center;gap:6px}
+    /* PRODUCT */
+    .product{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:6px 0 20px;align-items:start}
+    .media{aspect-ratio:4/3.3;border-radius:14px;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center}
+    .media img{padding:3%;max-width:100%;max-height:170%;height:142%;object-fit:cover;border-radius:12px}
+    .summary{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+    .title{font-size:clamp(22px,3.6vw,32px);line-height:1.2;margin:0 0 6px}
+    .subtitle{color:var(--muted);margin:6px 0 12px}
+    .price{font-weight:800;color:var(--primary);margin:8px 0 12px}
+    .label{display:inline-flex;gap:8px;align-items:center;background:#fff3cd;color:#b58100;border:1px solid #ffe69c;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .qty{display:flex;align-items:center;gap:8px;margin:14px 0}
+    .qty button{width:36px;height:36px;border-radius:10px;border:1px solid #cfe4d2;background:#fff;cursor:pointer;font-weight:800}
+    .qty input{height:36px;line-height:36px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:2px solid transparent;cursor:pointer;font-weight:800}
+    .btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px var(--ring)}
+    .btn-outline{border-color:var(--primary);color:var(--primary);background:transparent}
+    .btn-outline:disabled{opacity:.6;cursor:not-allowed}
+    .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+    .meta .box{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px;text-align:center;display:flex;align-items:center;justify-content:center;text-wrap:balance}
+    /* QUOTE */
+    .quote-section{margin-top:24px}
+    .quote{max-width:var(--maxw);margin:0 auto;background:linear-gradient(135deg,#ffffff,#f2f7f3);border:1px solid rgba(0,0,0,.06);padding:24px;border-radius:16px;box-shadow:var(--shadow)}
+    .quote em{color:var(--accent);font-weight:600}
+    /* TABS */
+    .tabs{margin-top:18px;border-top:1px solid rgba(0,0,0,.06)}
+    .tablist{display:flex;gap:4px;flex-wrap:wrap}
+    .tab-btn{border:0;background:transparent;padding:12px 14px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+    .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
+    .tab-panel{display:none;padding:16px 0}
+    .tab-panel.active{display:block}
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+    .card{background:var(--surface);padding:16px;border-radius:16px;border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow)}
+    .list{display:grid;gap:8px}
+    /* MODAL CONTACT (giữa màn hình) */
+    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+    .drawer{background:#fff;width:100%;max-width:560px;border-radius:16px;padding:18px 16px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.06);animation:pop .18s ease-out}
+    @keyframes pop{from{transform:scale(.98);opacity:.5}to{transform:scale(1);opacity:1}}
+    .row{display:grid;gap:10px;margin:8px 0}
+    .row input,.row textarea{width:100%;padding:12px 14px;border:1px solid #cfe4d2;border-radius:12px;font:inherit;transition:border-color .2s, box-shadow .2s, background .2s}
+    .row textarea{min-height:120px}
+    .row .hint{font-size:12px;color:#577a59}
+    .row .err{font-size:12px;color:#7a271a;display:none}
+    .row [aria-invalid="true"]{border-color:#e76a5f;box-shadow:0 0 0 3px rgba(231,106,95,.18);background:#fff7f6}
+    .toast{position:fixed;left:50%;top:14px;transform:translateX(-50%);background:#0f5132;color:#d1f7e1;padding:12px 16px;border-radius:10px;border:1px solid #badbcc;box-shadow:var(--shadow);display:none;z-index:70;font-weight:700}
+    .toast.error{background:#842029;color:#ffe0e0;border-color:#f5c2c7}
+    /* FOOTER */
+    footer{background:#0e1a0f;color:#d7e3d7;margin-top:32px}
+    .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
+    .copyright{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:#a6b5a6;font-size:14px}
+    /* Responsive */
+    @media (max-width:920px){.product{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.meta{grid-template-columns:1fr 1fr}}
+    @media (max-width:680px){.nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px;flex-direction:column}.menu-btn{display:block}.meta{grid-template-columns:1fr}}
+    html{overflow-y:scroll}
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
+
+<div class="container">
+  <div class="breadcrumbs">
+    <a th:href="@{/home}">Trang chủ</a> / <a th:href="@{/home#san-pham}">Sản phẩm</a> /
+    <span th:text="${p.name}">Tên sản phẩm</span>
+  </div>
+
+  <section class="product">
+    <div class="media">
+      <img th:if="${p.imgUrl}" th:src="${p.imgUrl}" th:alt="${p.name}"/>
+      <div th:if="${p.imgUrl == null}">Ảnh sản phẩm Mầm Nâu</div>
+    </div>
+
+    <aside class="summary">
+      <h1 class="title" th:text="${p.name}">Phân hữu cơ từ bã cà phê — Mầm Nâu</h1>
+      <p class="subtitle" th:if="${p.shortDesc}" th:text="${p.shortDesc}">Mô tả ngắn…</p>
+
+      <div class="price" th:if="${p.price != null}">
+        <span th:text="${#numbers.formatDecimal(p.price, 0, 'POINT', 0, 'POINT')}">100000</span> VND
+      </div>
+
+      <span class="label">⚠️ Chưa tích hợp thanh toán • Đặt qua form/liên hệ</span>
+
+      <div class="qty">
+        <strong>Số lượng ước muốn:</strong>
+        <button id="minus">−</button>
+        <input id="qty" type="number" value="1" min="1"
+               style="width:72px;padding:8px 10px;border-radius:10px;border:1px solid #cfe4d2;"/>
+        <button id="plus">+</button>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="openContact">Liên hệ đặt hàng</button>
+        <button class="btn btn-outline" id="momoBtn" disabled>Thanh toán MoMo (sắp có)</button>
+      </div>
+      <div class="meta">
+        <div class="box">🚚 Giao nội thành 24–48h</div>
+        <div class="box">♻️ Từ bã cà phê tái chế</div>
+        <div class="box">🌱 100% hữu cơ</div>
+      </div>
+    </aside>
+  </section>
+</div>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <div class="container">
+    <div class="quote">
+      <p>
+        <em th:text="${#strings.defaultString(p.brandStory, #strings.defaultString(p.greenStory, '“Mỗi tách cà phê…”'))}">
+          Câu chuyện thương hiệu/ xanh
+        </em>
+      </p>
+      <small>— Câu chuyện Mầm Nâu</small>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <section class="tabs">
+    <div class="tablist">
+      <button class="tab-btn active" data-tab="mo-ta">Mô tả</button>
+      <button class="tab-btn" data-tab="huong-dan">Hướng dẫn sử dụng</button>
+      <button class="tab-btn" data-tab="ben-vung">Cam kết bền vững</button>
+      <button class="tab-btn" data-tab="faq">FAQ</button>
+    </div>
+
+    <div id="mo-ta" class="tab-panel active">
+      <div class="cards">
+        <div class="card">
+          <h3>Mô tả chi tiết</h3>
+          <p th:utext="${#strings.isEmpty(p.longDesc) ? 'Phân hữu cơ từ bã cà phê ủ hoai, mùi nhẹ, phù hợp cây cảnh và rau gia vị.' : p.longDesc}">
+            Nội dung mô tả chi tiết…
+          </p>
+        </div>
+        <div class="card" th:if="${p.formula}">
+          <h3>Công thức</h3>
+          <div th:utext="${p.formula}">Công thức hiển thị ở đây…</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="huong-dan" class="tab-panel">
+      <div class="cards">
+        <div class="card">
+          <h3>Hướng dẫn</h3>
+          <div th:utext="${p.instructions} ?: 'Trộn 10–20% thể tích đất; rải 50–80g/chậu 25–30cm mỗi 3–4 tuần.'">
+            Hướng dẫn sử dụng…
+          </div>
+        </div>
+        <div class="card" th:if="${p.notes}">
+          <h3>Lưu ý</h3>
+          <div th:utext="${p.notes}">Lưu ý…</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="ben-vung" class="tab-panel">
+      <div class="cards">
+        <div class="card" th:if="${p.commitments}">
+          <h3>Cam kết</h3>
+          <div th:utext="${p.commitments}">Cam kết…</div>
+        </div>
+        <div class="card" th:if="${p.greenStory}">
+          <h3>Câu chuyện xanh</h3>
+          <div th:utext="${p.greenStory}">Green story…</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="faq" class="tab-panel">
+      <div class="card">
+        <h3>Câu hỏi thường gặp</h3>
+        <details>
+          <summary>Có mùi không?</summary>
+          <p>Đã ủ hoai, mùi nhẹ và tan nhanh khi trộn đất.</p>
+        </details>
+        <details>
+          <summary>Dùng cho rau ăn lá?</summary>
+          <p>Phù hợp khi trộn đất nền, tránh bón quá dày lên lá non.</p>
+        </details>
+        <details>
+          <summary>Thanh toán thế nào?</summary>
+          <p>Giai đoạn đầu, đặt qua form hoặc liên hệ. MoMo sẽ tích hợp ở bản sau.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- MODAL LIÊN HỆ (giữa màn hình) -->
+<div class="backdrop" id="drawer" aria-hidden="true">
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <h3 id="contactTitle">Liên hệ đặt hàng</h3>
+    <form id="contactForm" novalidate>
+      <div class="row">
+        <div>
+          <input id="name" placeholder="Họ tên" required aria-invalid="false"/>
+          <div class="hint">Nhập ít nhất 2 ký tự.</div>
+          <div class="err" id="err-name">Vui lòng nhập họ tên hợp lệ.</div>
+        </div>
+        <div>
+          <input id="phone" type="tel" placeholder="Số điện thoại (Zalo)" aria-invalid="false"
+                 pattern="^(\+?84|0)(3|5|7|8|9)\d{8}$"/>
+          <div class="hint">Định dạng VN: 0xxxxxxxxx hoặc +84xxxxxxxxx.</div>
+          <div class="err" id="err-phone">Số điện thoại VN chưa đúng.</div>
+        </div>
+        <div>
+          <input id="email" type="email" placeholder="Email (tuỳ chọn)" aria-invalid="false"/>
+          <div class="err" id="err-email">Email chưa đúng định dạng.</div>
+        </div>
+        <div>
+          <textarea id="message" rows="4" placeholder="Ghi chú (địa chỉ, số lượng, thời gian nhận)" aria-invalid="false"></textarea>
+          <div class="hint">Nội dung ≥ 10 ký tự sẽ giúp tư vấn nhanh hơn.</div>
+          <div class="err" id="err-message">Vui lòng nhập ≥ 10 ký tự.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-outline" type="button" id="closeDrawer">Đóng</button>
+        <button class="btn btn-primary" type="submit">Gửi yêu cầu</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- FOOTER -->
+<th:block th:replace="~{group5_template/footer :: footer}"></th:block>
+
+<script>
+  // Navbar mobile
+  const menuBtn = document.getElementById("menuBtn");
+  const navMenu = document.getElementById("navMenu");
+  menuBtn?.addEventListener("click", () => {
+    const visible = getComputedStyle(navMenu).display !== "none";
+    navMenu.style.display = visible ? "none" : "flex";
+  });
+
+  // Qty controls
+  const qty = document.getElementById("qty");
+  document.getElementById("minus").addEventListener("click", () => {
+    qty.value = Math.max(1, (+qty.value || 1) - 1);
+  });
+  document.getElementById("plus").addEventListener("click", () => {
+    qty.value = (+qty.value || 1) + 1;
+  });
+
+  // Tabs
+  const tabs = document.querySelectorAll(".tab-btn");
+  const panels = document.querySelectorAll(".tab-panel");
+  tabs.forEach((btn) => btn.addEventListener("click", () => {
+    tabs.forEach((b) => b.classList.remove("active"));
+    panels.forEach((p) => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  }));
+
+  // Modal (giữa màn hình)
+  const drawer = document.getElementById("drawer");
+  const openContact = document.getElementById("openContact");
+  const closeDrawer = document.getElementById("closeDrawer");
+  openContact.addEventListener("click", () => { drawer.style.display = "flex"; drawer.setAttribute('aria-hidden','false'); });
+  closeDrawer.addEventListener("click", () => { drawer.style.display = "none"; drawer.setAttribute('aria-hidden','true'); });
+  drawer.addEventListener("click", (e) => { if (e.target === drawer) { drawer.style.display = "none"; drawer.setAttribute('aria-hidden','true'); } });
+
+  // Toast helper
+  const toast = document.getElementById('toast');
+  function showToast(msg, isError=false){
+    toast.textContent = msg;
+    toast.classList.toggle('error', !!isError);
+    toast.style.display = 'block';
+    setTimeout(()=> toast.style.display='none', 2400);
+  }
+
+  // ===== Validation helpers =====
+  const nameEl = document.getElementById('name');
+  const phoneEl = document.getElementById('phone');
+  const emailEl = document.getElementById('email');
+  const msgEl = document.getElementById('message');
+  const minName = 2, minMsg = 10;
+  const phoneRe = /^(\+?84|0)(3|5|7|8|9)\d{8}$/;
+
+  function showErr(el,id){ el.setAttribute('aria-invalid','true'); const e=document.getElementById(id); e&&(e.style.display='block'); }
+  function clearErr(el,id){ el.setAttribute('aria-invalid','false'); const e=document.getElementById(id); e&&(e.style.display='none'); }
+
+  function validateName(){
+    const ok = nameEl.value.trim().length >= minName;
+    ok?clearErr(nameEl,'err-name'):showErr(nameEl,'err-name'); return ok;
+  }
+  function validateEmail(){
+    const v = emailEl.value.trim();
+    if(!v){ clearErr(emailEl,'err-email'); return true; } // optional
+    const ok = emailEl.checkValidity();
+    ok?clearErr(emailEl,'err-email'):showErr(emailEl,'err-email'); return ok;
+  }
+  function validatePhone(){
+    const v = phoneEl.value.trim();
+    if(!v){ clearErr(phoneEl,'err-phone'); return true; } // optional
+    const ok = phoneRe.test(v);
+    ok?clearErr(phoneEl,'err-phone'):showErr(phoneEl,'err-phone'); return ok;
+  }
+  function validateMsg(){
+    const v = msgEl.value.trim();
+    if(!v){ clearErr(msgEl,'err-message'); return true; } // optional
+    const ok = v.length >= minMsg;
+    ok?clearErr(msgEl,'err-message'):showErr(msgEl,'err-message'); return ok;
+  }
+  function validateAtLeastEmailOrPhone(){
+    const hasAny = emailEl.value.trim() || phoneEl.value.trim();
+    if(!hasAny){ showErr(emailEl,'err-email'); showErr(phoneEl,'err-phone'); }
+    return !!hasAny;
+  }
+
+  [nameEl,emailEl,phoneEl,msgEl].forEach(el=>{
+    el.addEventListener('input', ()=>{
+      if(el===nameEl) validateName();
+      if(el===emailEl) validateEmail();
+      if(el===phoneEl) validatePhone();
+      if(el===msgEl) validateMsg();
+    });
+    el.addEventListener('blur', ()=> el.dispatchEvent(new Event('input')));
+  });
+
+  // Submit -> gọi API gửi mail
+  document.getElementById("contactForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const okName = validateName();
+    const okEmail = validateEmail();
+    const okPhone = validatePhone();
+    const okAny  = validateAtLeastEmailOrPhone();
+    const okMsg  = validateMsg(); // chỉ cảnh báo nếu <10
+
+    if(!(okName && okEmail && okPhone && okAny)){
+      showToast("⚠️ Vui lòng kiểm tra lại thông tin.", true);
+      (document.querySelector('#drawer [aria-invalid="true"]')||nameEl).focus();
+      return;
+    }
+
+    const name = nameEl.value.trim();
+    const phone = phoneEl.value.trim();
+    const email = emailEl.value.trim();
+    const message = msgEl.value.trim();
+    const quantity = +document.getElementById("qty").value || 1;
+    const product = document.querySelector(".title")?.textContent || "";
+
+    const btn = document.querySelector('#contactForm button[type="submit"]');
+    btn.disabled = true; btn.textContent = "Đang gửi...";
+
+    try{
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, email, message, quantity, product })
+      });
+
+      const data = await res.json().catch(()=> ({}));
+      if(res.ok && data.ok){
+        showToast("✅ Đã gửi yêu cầu, admin sẽ liên hệ bạn!");
+        drawer.style.display = "none"; drawer.setAttribute('aria-hidden','true');
+        document.getElementById("contactForm").reset();
+      }else{
+        showToast("❌ Gửi thất bại, vui lòng thử lại!", true);
+      }
+    }catch(err){
+      showToast("❌ Lỗi kết nối, thử lại sau!", true);
+    }finally{
+      btn.disabled = false; btn.textContent = "Gửi yêu cầu";
+    }
+  });
+</script>
+</body>
+</html>

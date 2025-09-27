@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${title} ?: 'Liên hệ — Mầm Nâu'">Liên hệ — Mầm Nâu</title>
+    <meta name="description" th:content="${desc} ?: 'Liên hệ với Mầm Nâu để tìm hiểu sản phẩm phân hữu cơ từ bã cà phê, hợp tác và phản hồi.'"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
+    <style>
+        :root{
+          --bg:#f3fbf5;--surface:#fff;--text:#1f3520;--muted:#5a6b57;
+          --primary:#2e7d32;--primary-100:#e9f5ec;--primary-200:#cfe9d7;--primary-600:#256b29;
+          --accent:#6b4f3b;--accent-100:#efe5db;--shadow:0 10px 25px rgba(0,0,0,.06);
+          --radius:16px;--maxw:1140px;
+        }
+        *{box-sizing:border-box}
+        html,body{margin:0;padding:0}
+        body{
+          font-family:"Be Vietnam Pro",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+          background:
+            radial-gradient(1400px 600px at 10% -10%, #ecfff1 0, transparent 60%),
+            radial-gradient(1200px 500px at 110% -20%, #e5fff0 0, transparent 55%),
+            linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));
+          color:var(--text); line-height:1.6;
+        }
+        a{color:inherit;text-decoration:none}
+        .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+        /* NAVBAR */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
+      backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+      background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
+    .brand span{letter-spacing:.3px}
+    .brand small{font-weight:600;color:var(--accent);margin-left:6px}
+    .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+    .nav a{font-weight:600;}.nav a:hover{color:var(--primary)}
+    .cta{display:inline-flex;align-items:center;gap:10px;background:var(--primary);
+      color:#fff;padding:10px 16px;border-radius:12px;box-shadow:0 8px 20px var(--ring)}
+    .menu-btn{display:none;border:0;background:transparent;font-size:26px}
+
+        /* HERO */
+        .hero{padding:64px 0;text-align:center}
+        .hero h1{font-size:clamp(28px,5vw,44px);margin:0}
+        .hero p{color:var(--muted);max-width:65ch;margin:10px auto 0}
+
+        /* CONTACT */
+        .contact{padding:48px 0}
+        .grid-2{
+          display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch;
+        }
+        .card{
+          background:var(--surface);padding:22px;border-radius:16px;box-shadow:var(--shadow);
+          border:1px solid rgba(0,0,0,.06); display:flex;flex-direction:column;
+        }
+        .card h2{margin:0 0 12px}
+        form{display:grid;gap:16px;margin-top:6px}
+        .field{display:flex;flex-direction:column;gap:8px}
+        label{font-weight:700;color:#223b22}
+        .hint{font-size:12px;color:#577a59}
+        .err{font-size:12px;color:#7a271a;display:none}
+        input,textarea{
+          width:100%;padding:14px 16px;border:1px solid var(--primary-200);border-radius:12px;
+          font:inherit;font-size:15px;background:#fff;transition:border-color .2s, box-shadow .2s, background .2s
+        }
+        input:focus,textarea:focus{
+          border-color:var(--primary);box-shadow:0 0 0 3px rgba(46,125,50,.18);outline:none
+        }
+        input:invalid[aria-invalid="true"], textarea:invalid[aria-invalid="true"]{
+          border-color:#e76a5f; box-shadow:0 0 0 3px rgba(231,106,95,.18); background:#fff7f6;
+        }
+        textarea{min-height:140px;resize:vertical}
+        button{
+          background:linear-gradient(180deg,var(--primary),var(--primary-600));
+          color:#fff;padding:14px 22px;border:0;border-radius:14px;font-weight:800;cursor:pointer;
+          font-size:16px;box-shadow:0 6px 18px rgba(46,125,50,.25);transition:transform .2s,opacity .2s;
+          justify-self:center;min-width:200px
+        }
+        button:hover{opacity:.96;transform:translateY(-1.5px)}
+        button:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+        /* INFO */
+        .info ul{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+        .info li strong{display:block;margin-bottom:2px}
+
+        /* ALERTS */
+        .alert{padding:12px 14px;border-radius:12px;margin:10px 0 14px;font-weight:700}
+        .alert-success{background:#e8f4ea;color:#1f5f28;border:1px solid #bfe3c7}
+        .alert-error{background:#fdecea;color:#7a271a;border:1px solid #f7c5bf}
+
+        /* FOOTER */
+        footer{background:#0e1a0f;color:#d7e3d7;margin-top:40px}
+        .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
+        .copyright{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:#a6b5a6;font-size:14px}
+
+        /* Responsive */
+        @media (max-width:900px){.grid-2{grid-template-columns:1fr}.footer-wrap{grid-template-columns:1fr}}
+        @media (max-width:680px){
+          .nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px;flex-direction:column}
+          .menu-btn{display:block}
+        }
+
+        /* thong tin lien he */
+/* thong tin lien he */
+.contact-info {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  /* max-width: 320px;  <-- XÓA GIỚI HẠN NÀY */
+  width: 100%;               /* NEW: chiếm full chiều ngang card */
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.contact-info li {
+  width: 100%;               /* NEW: cho từng item full hàng */
+  padding: 12px 16px;        /* tăng chút padding nhìn đã hơn */
+  margin-bottom: 10px;
+  background: var(--primary-100, #f0f7f2);  /* nền xanh nhạt */
+  border-radius: 12px;
+  display: grid;             /* căn nhãn và nội dung thẳng hàng */
+  grid-template-columns: 160px 1fr;  /* nhãn cố định, nội dung co giãn */
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: background 0.2s ease;
+}
+
+.contact-info li:hover { background: #e4f3e7; }
+
+.contact-info strong {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.contact-info a {
+  color: #2e7d32;
+  text-decoration: none;
+  font-weight: 600;
+}
+.contact-info a:hover { text-decoration: underline; }
+
+/* Responsive: khi hẹp màn hình, cho nhãn nằm trên, nội dung dưới */
+@media (max-width: 520px) {
+  .contact-info li {
+    grid-template-columns: 1fr;
+    row-gap: 4px;
+  }
+}
+    </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
+
+<!-- HERO -->
+<header class="hero">
+    <h1>Liên hệ</h1>
+    <p th:text="${tagline} ?: 'Kết nối với Mầm Nâu để cùng gieo mầm xanh'">Kết nối với Mầm Nâu để cùng gieo mầm xanh</p>
+</header>
+
+<!-- CONTACT SECTION -->
+<section class="contact">
+    <div class="container grid-2">
+        <!-- FORM -->
+        <div class="card">
+            <h2>🌱 Gửi tin nhắn cho chúng tôi</h2>
+
+            <!-- Alerts từ Controller -->
+            <div th:if="${success}" class="alert alert-success" th:text="${success}" aria-live="polite">Gửi thành công</div>
+            <div th:if="${error}" class="alert alert-error" th:text="${error}" aria-live="assertive">Có lỗi xảy ra</div>
+
+            <form id="contactForm" th:action="@{/contact}" method="post" novalidate>
+                <!-- CSRF (nếu có Spring Security) -->
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <div class="field">
+                    <label for="name">Họ và tên</label>
+                    <input id="name" name="name" type="text" minlength="2" required
+                           placeholder="Ví dụ: Nguyễn Văn A" autocomplete="name" aria-invalid="false"/>
+                    <div class="hint">Nhập ít nhất 2 ký tự.</div>
+                    <div class="err" id="err-name">Vui lòng nhập họ và tên hợp lệ.</div>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" required
+                           placeholder="mamnau@gmail.com" autocomplete="email" aria-invalid="false"/>
+                    <div class="err" id="err-email">Email chưa đúng định dạng.</div>
+                </div>
+
+                <div class="field">
+                    <label for="phone">Số điện thoại</label>
+                    <input id="phone" name="phone" type="tel" inputmode="tel"
+                           placeholder="VD: 0912345678 hoặc +84912345678"
+                           pattern="^(\+?84|0)(3|5|7|8|9)\d{8}$" required aria-invalid="false"
+                           title="Số VN: bắt đầu bằng 0 hoặc +84, tiếp theo là 3/5/7/8/9 và 8 số nữa"/>
+                    <div class="hint">Định dạng VN: 0xxxxxxxxx hoặc +84xxxxxxxxx.</div>
+                    <div class="err" id="err-phone">Số điện thoại VN chưa đúng.</div>
+                </div>
+
+                <div class="field">
+                    <label for="message">Nội dung</label>
+                    <textarea id="message" name="message" minlength="10" required placeholder="Bạn cần hỗ trợ điều gì?"></textarea>
+                    <div class="hint">Tối thiểu 10 ký tự để chúng tôi hiểu rõ hơn.</div>
+                    <div class="err" id="err-message">Vui lòng nhập nội dung (≥ 10 ký tự).</div>
+                </div>
+
+                <button id="submitBtn" type="submit">Gửi liên hệ</button>
+            </form>
+        </div>
+
+        <!-- INFO (1 card duy nhất) -->
+        <div class="card info">
+            <h2>Thông tin liên lạc</h2>
+
+            <div class="logo-wrap" style="text-align:center;padding:24px">
+                <img src="/img/logo1.png" alt="Mầm Nâu Logo" style="max-width:180px;height:auto;" />
+            </div>
+
+            <ul class="contact-info">
+                <li><strong>Địa chỉ:</strong> NVC Nối Dài, Cần Thơ</li>
+                <li><strong>Email:</strong> <a href="mailto:hello@mamnau.vn">hello@mamnau.vn</a></li>
+                <li><strong>Điện thoại:</strong> <a href="tel:+84123456789">+84 123 456 789</a></li>
+                <li><strong>Facebook:</strong> <a href="#" rel="nofollow">@mamnau</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<th:block th:replace="~{group5_template/footer :: footer}"></th:block>
+
+
+<!-- ======= CONTACT FORM VALIDATION ======= -->
+<script>
+    // Menu mobile
+    const menuBtn = document.getElementById("menuBtn");
+    const navMenu = document.getElementById("navMenu");
+    menuBtn?.addEventListener("click", () => {
+      const visible = getComputedStyle(navMenu).display !== "none";
+      navMenu.style.display = visible ? "none" : "flex";
+    });
+    document.getElementById("year") && (document.getElementById("year").textContent = new Date().getFullYear());
+
+    // VALIDATION
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function showError(input, errId){
+      const err = document.getElementById(errId);
+      input.setAttribute('aria-invalid', 'true');
+      err && (err.style.display = 'block');
+    }
+    function clearError(input, errId){
+      const err = document.getElementById(errId);
+      input.setAttribute('aria-invalid', 'false');
+      err && (err.style.display = 'none');
+    }
+    function validateField(input, errId, extra = null){
+      let ok = input.checkValidity();
+      if (extra && ok) ok = extra(input);
+      if(!ok){ showError(input, errId); } else { clearError(input, errId); }
+      return ok;
+    }
+
+    const minMessage = 10;
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const messageInput = document.getElementById('message');
+
+    [nameInput, emailInput, phoneInput, messageInput].forEach(el => {
+      el.addEventListener('input', () => {
+        const id = el.id;
+        const map = {name:'err-name', email:'err-email', phone:'err-phone', message:'err-message'};
+        if(id === 'message'){
+          validateField(el, map[id], (inp)=> inp.value.trim().length >= minMessage);
+        } else if (id === 'name'){
+          validateField(el, map[id], (inp)=> inp.value.trim().length >= 2);
+        } else {
+          validateField(el, map[id]);
+        }
+      });
+      el.addEventListener('blur', () => el.dispatchEvent(new Event('input')));
+    });
+
+    form.addEventListener('submit', (e) => {
+      nameInput.value = nameInput.value.trim();
+      emailInput.value = emailInput.value.trim();
+      phoneInput.value = phoneInput.value.trim();
+      messageInput.value = messageInput.value.trim();
+
+      const okName = validateField(nameInput, 'err-name', (inp)=> inp.value.length >= 2);
+      const okEmail = validateField(emailInput, 'err-email');
+      const okPhone = validateField(phoneInput, 'err-phone');
+      const okMsg  = validateField(messageInput, 'err-message', (inp)=> inp.value.length >= minMessage);
+
+      if(!(okName && okEmail && okPhone && okMsg)){
+        e.preventDefault();
+        const firstErr = document.querySelector('[aria-invalid="true"]');
+        firstErr && firstErr.focus();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Đang gửi...';
+    });
+</script>
+
+<!-- ======= WOW 3D (Three.js) ======= -->
+<!--<script defer src="/js/three.min.js"></script>-->
+<!--<script defer src="/js/plant3d-init.js"></script>-->
+
+</body>
+</html>

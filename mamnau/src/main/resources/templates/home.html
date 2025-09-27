@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${title} ?: 'Mầm Nâu — Phân hữu cơ từ bã cà phê'">
+    Mầm Nâu — Phân hữu cơ từ bã cà phê
+  </title>
+  <meta name="description"
+        th:content="${desc} ?: 'Mầm Nâu: Biến bã cà phê thành phân hữu cơ thân thiện môi trường cho vườn nhà và nông nghiệp đô thị.'"/>
+
+  <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- CSS chính -->
+  <style>
+    :root {
+      --bg:#f7fbf7;--surface:#fff;--text:#243522;--muted:#5b6b57;
+      --primary:#2e7d32;--primary-200:#a8d5b8;--accent:#6b4f3b;
+      --accent-100:#efe5db;--ring:rgba(46,125,50,0.25);
+      --shadow:0 10px 25px rgba(0,0,0,0.06);--radius:16px;--maxw:1140px;
+    }
+    *{box-sizing:border-box}html,body{margin:0;padding:0}
+    body{font-family:"Be Vietnam Pro",system-ui,-apple-system,Segoe UI,Roboto,Arial,"Helvetica Neue",sans-serif;
+      background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));
+      color:var(--text);line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+    /* NAVBAR */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
+      backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+      background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
+    .brand span{letter-spacing:.3px}
+    .brand small{font-weight:600;color:var(--accent);margin-left:6px}
+    .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+    .nav a{font-weight:600;}.nav a:hover{color:var(--primary)}
+    .cta{display:inline-flex;align-items:center;gap:10px;background:var(--primary);
+      color:#fff;padding:10px 16px;border-radius:12px;box-shadow:0 8px 20px var(--ring)}
+    .menu-btn{display:none;border:0;background:transparent;font-size:26px}
+
+    /* HERO */
+    .hero{padding:56px 0 24px}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+    .badge{display:inline-flex;align-items:center;gap:10px;background:#e9f5ec;
+      border:1px solid #d6ebdb;color:#2d5b31;padding:8px 12px;border-radius:999px;font-weight:600}
+    .title{font-size:clamp(28px,5vw,46px);line-height:1.15;margin:14px 0}
+    .subtitle{font-size:18px;color:var(--muted);max-width:60ch}
+    .hero-actions{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
+    .ghost{border:2px solid var(--primary);color:var(--primary);background:transparent;
+      padding:10px 16px;border-radius:12px;font-weight:700}
+    .ghost:hover{background:#edf7ef}
+    .hero-card{background:var(--surface);padding:22px;border-radius:var(--radius);
+      box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.06)}
+    .hero-img{border-radius:12px;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);
+      display:grid;place-items:center;color:#3a2d22;font-weight:700}
+
+    /* SECTION */
+    .section{padding:56px 0}
+    .section h2{font-size:28px;margin:0 0 10px}
+    .section p.lead{color:var(--muted);max-width:68ch;margin:0 0 24px}
+
+    /* GRID */
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--surface);padding:18px;border-radius:16px;
+      border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow)}
+    .card h3{margin:6px 0;font-size:18px}
+    .chip{display:inline-block;background:#f3efe9;color:#6b4f3b;
+      padding:6px 10px;border-radius:999px;font-weight:600;font-size:12px}
+
+    /* PRODUCT */
+    .product{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+    .product .media{aspect-ratio:16/10;border-radius:14px;background:linear-gradient(180deg,#fff,#e9f2ea);
+      border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow);display:grid;place-items:center}
+    .list{display:grid;gap:10px;margin:6px 0}
+    .li{display:flex;gap:10px;align-items:flex-start}.li i{font-weight:900}
+
+    /* STEPS */
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .step{background:var(--surface);padding:16px;border-radius:14px;border:1px solid rgba(0,0,0,.06)}
+    .step .num{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;
+      background:#e8f4ea;color:#2e7d32;font-weight:800;margin-bottom:8px}
+
+    /* QUOTE */
+    .quote{background:linear-gradient(135deg,#ffffff,#f2f7f3);border:1px solid rgba(0,0,0,.06);
+      padding:18px;border-radius:16px;display:grid;gap:6px}
+
+    /* CTA BLOCK */
+    .cta-block{background:linear-gradient(135deg,#eaf4ee,#fff);padding:24px;border-radius:18px;
+      border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .cta-block .actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* FOOTER */
+    footer{background:#0e1a0f;color:#d7e3d7;margin-top:40px}
+    .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
+    .footer-wrap a{color:#d7e3d7;opacity:.9}.footer-wrap a:hover{opacity:1}
+    .copyright{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:#a6b5a6;font-size:14px}
+
+    /* RESPONSIVE */
+    @media (max-width:960px){
+      .hero-grid{grid-template-columns:1fr}
+      .product{grid-template-columns:1fr}
+      .steps{grid-template-columns:repeat(2,1fr)}
+      .grid-3{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:680px){
+      .nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#fff;
+        border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px;flex-direction:column}
+      .menu-btn{display:block}
+      .steps{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr}
+      .cta-block{flex-direction:column;align-items:flex-start}
+    }
+
+
+    /*SIZE ANH TRANG HOME*/
+    /* Áp dụng cho ảnh trong hero-card */
+.hero-card img {
+  max-width: 100%;
+  width: 430px;       /* Giới hạn tối đa khoảng 300–350px là vừa */
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Ảnh trong phần sản phẩm */
+.product .media img {
+padding : 0% 3%;
+  max-width: 100%;
+  width: 100%;       /* Tùy bạn chỉnh 300–380px */
+  height: 95%;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+}
+
+/* Đảm bảo trên màn nhỏ ảnh không vượt màn hình */
+@media (max-width: 680px) {
+  .hero-card img,
+  .product .media img {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+  </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="badge">♻️ Từ bã cà phê → dưỡng chất cho đất</span>
+      <h1 class="title">
+        <span th:text="${brandName}">Mầm Nâu</span> — nuôi dưỡng mầm sống mới từ sắc nâu cà phê
+      </h1>
+      <p class="subtitle">
+        Chúng tôi tái chế bã cà phê thành <strong>phân hữu cơ giàu dinh dưỡng</strong>,
+        phù hợp cho vườn nhà, ban công, và nông nghiệp đô thị. Nhẹ mùi, dễ sử dụng, thân thiện môi trường.
+      </p>
+      <div class="hero-actions">
+        <a class="cta" href="#san-pham">Xem sản phẩm</a>
+        <a class="ghost" href="#quy-trinh">Tìm hiểu quy trình</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-img">
+        <img src="/img/anhhome.jpeg" alt="Hình minh họa sản phẩm / vườn xanh">
+      </div>
+      <div class="list" style="margin-top:12px">
+        <div class="li"><i>✔</i> Bổ sung chất hữu cơ, cải thiện cấu trúc đất</div>
+        <div class="li"><i>✔</i> Giảm rác thải cà phê, góp phần trung hòa carbon</div>
+        <div class="li"><i>✔</i> Phù hợp cây kiểng, rau gia đình, thảo mộc</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- LỢI ÍCH -->
+<section id="loi-ich" class="section">
+  <div class="container">
+    <h2>Lợi ích nổi bật</h2>
+    <p class="lead">UI nhẹ, sáng, nhấn mạnh câu chuyện tái chế và trách nhiệm môi trường.</p>
+    <div class="grid-3">
+      <article class="card">
+        <span class="chip">🌿 Sinh học</span>
+        <h3>Giàu hữu cơ</h3>
+        <p>Bổ sung mùn, tăng khả năng giữ ẩm, hỗ trợ hệ vi sinh có lợi trong đất.</p>
+      </article>
+      <article class="card">
+        <span class="chip">🫘 Cà phê</span>
+        <h3>Tận dụng bã cà phê</h3>
+        <p>Giảm chất thải, vòng đời mới cho phụ phẩm, đúng tinh thần kinh tế tuần hoàn.</p>
+      </article>
+      <article class="card">
+        <span class="chip">🛠️ Tiện dụng</span>
+        <h3>Dễ dùng tại nhà</h3>
+        <p>Dạng hạt/viên/đất trộn, mùi nhẹ, sạch tay, phù hợp không gian nhỏ.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SẢN PHẨM -->
+<section id="san-pham" class="section">
+  <div class="container product" th:if="${#lists.isEmpty(products) == false}">
+    <div class="media">
+      <img src="/img/spminhhoa.png" alt="Ảnh gói phân hữu cơ Mầm Nâu">
+    </div>
+    <div>
+      <h2>Sản phẩm Mầm Nâu</h2>
+      <div class="list" th:each="p : ${products}">
+        <div class="li">
+          <i>•</i> <strong th:text="${p.name}">Tên sản phẩm</strong>
+          — <span th:text="${p.price}">100000</span> VND
+        </div>
+        <div class="li" th:if="${p.shortDesc}">
+          <i>•</i> <span th:text="${p.shortDesc}">Mô tả ngắn…</span>
+        </div>
+        <div class="li">
+           <a class="ghost" th:href="@{'/san-pham/' + ${p.slug}}">Xem chi tiết →</a>
+        </div>
+        <hr/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUY TRÌNH -->
+<section id="quy-trinh" class="section">
+  <div class="container">
+    <h2>Quy trình Mầm Nâu</h2>
+    <p class="lead">Minh bạch từ nguồn bã cà phê đến thành phẩm.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><strong>Thu gom</strong><br/><small>Từ quán cà phê & hộ gia đình.</small></div>
+      <div class="step"><div class="num">2</div><strong>Sơ chế</strong><br/><small>Phơi/ép ẩm, loại tạp, kiểm soát mùi.</small></div>
+      <div class="step"><div class="num">3</div><strong>Ủ & phối trộn</strong><br/><small>Ủ hiếu khí + phụ gia hữu cơ an toàn.</small></div>
+      <div class="step"><div class="num">4</div><strong>Đóng gói</strong><br/><small>Kiểm tra lô, cân nặng, truy xuất.</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="section" aria-labelledby="story">
+  <div class="container">
+    <h2 id="story">Câu chuyện Mầm Nâu</h2>
+    <div class="quote">
+      <p><em>“Từ sắc nâu cà phê, chúng tôi gieo mầm xanh mới. Mỗi gói phân hữu cơ là một bước nhỏ giảm rác thải và nuôi dưỡng khu vườn Việt.”</em></p>
+      <small>— Nhóm dự án Mầm Nâu</small>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" id="lien-he">
+  <div class="container cta-block">
+    <div>
+      <h3>Liên hệ & dùng thử</h3>
+      <p class="lead">Để lại email, chúng tôi sẽ gửi thông tin sản phẩm thử nghiệm và ưu đãi sớm.</p>
+    </div>
+    <form class="actions" onsubmit="return false;">
+      <input id="email" type="email" placeholder="Email của bạn" required
+             style="padding:12px 14px;border-radius:12px;border:1px solid #cfe4d2;min-width:240px;"/>
+      <button class="cta" id="signupBtn" type="submit">Đăng ký</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<th:block th:replace="~{group5_template/footer :: footer}"></th:block>
+
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const navMenu = document.getElementById("navMenu");
+  menuBtn?.addEventListener("click", () => {
+    const visible = getComputedStyle(navMenu).display !== "none";
+    navMenu.style.display = visible ? "none" : "flex";
+  });
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

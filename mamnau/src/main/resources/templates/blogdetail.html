@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Title with safe fallback -->
+    <title th:text="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Bài viết — Mầm Nâu'">
+        Bài viết — Mầm Nâu
+    </title>
+
+    <!-- SEO basic -->
+    <meta name="description" th:if="${p != null and !#strings.isEmpty(p.excerpt)}" th:content="${p.excerpt}" />
+    <meta name="description" th:if="${p == null or #strings.isEmpty(p.excerpt)}" content="Chia sẻ kiến thức làm vườn đô thị, tái chế bã cà phê cùng Mầm Nâu." />
+
+    <!-- Canonical -->
+    <link rel="canonical" th:if="${p != null and !#strings.isEmpty(p.slug)}" th:href="@{/blog/{slug}(slug=${p.slug})}" />
+    <link rel="canonical" th:if="${p == null or #strings.isEmpty(p.slug)}" href="/blog" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" th:content="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Bài viết — Mầm Nâu'" />
+    <meta property="og:description" th:if="${p != null and !#strings.isEmpty(p.excerpt)}" th:content="${p.excerpt}" />
+    <meta property="og:url" th:if="${p != null and !#strings.isEmpty(p.slug)}" th:content="@{/blog/{slug}(slug=${p.slug})}" />
+    <meta property="og:image" th:if="${p != null and p.coverUrl != null}" th:content="${p.coverUrl}" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" th:content="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Bài viết — Mầm Nâu'" />
+    <meta name="twitter:description" th:if="${p != null and !#strings.isEmpty(p.excerpt)}" th:content="${p.excerpt}" />
+    <meta name="twitter:image" th:if="${p != null and p.coverUrl != null}" th:content="${p.coverUrl}" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root{--bg:#f7fbf7;--surface:#fff;--text:#243522;--muted:#5b6b57;--primary:#2e7d32;--primary-200:#a8d5b8;--accent:#6b4f3b;--accent-100:#efe5db;--ring:rgba(46,125,50,.25);--shadow:0 10px 25px rgba(0,0,0,.06);--radius:16px;--maxw:960px}
+        *{box-sizing:border-box}html,body{margin:0;padding:0}
+        body{font-family:'Be Vietnam Pro',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));color:var(--text);line-height:1.75}
+        a{color:inherit;text-decoration:none}
+        .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+        /* NAVBAR */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
+      backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+      background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
+    .brand span{letter-spacing:.3px}
+    .brand small{font-weight:600;color:var(--accent);margin-left:6px}
+    .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+    .nav a{font-weight:600;}.nav a:hover{color:var(--primary)}
+    .cta{display:inline-flex;align-items:center;gap:10px;background:var(--primary);
+      color:#fff;padding:10px 16px;border-radius:12px;box-shadow:0 8px 20px var(--ring)}
+    .menu-btn{display:none;border:0;background:transparent;font-size:26px}
+
+        .breadcrumbs{font-size:14px;color:var(--muted);padding:12px 0}
+        .hero{padding:20px 0 8px}
+        .title{font-size:clamp(26px,4.6vw,40px);line-height:1.2;margin:0}
+        .meta{color:var(--muted);font-size:14px;display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+        .cover{aspect-ratio:16/9;border-radius:16px;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow);display:grid;place-items:center;color:#3a2d22;font-weight:700}
+
+        .backline{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+        .btn-outline{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:1px solid #cfe4d2;background:#fff;font-weight:700}
+
+        .grid{display:grid;grid-template-columns:2fr 1fr;gap:22px;margin-top:14px}
+        article{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:16px;box-shadow:var(--shadow);padding:18px}
+        article h2{font-size:22px;margin:18px 0 8px}
+        article h3{font-size:18px;margin:16px 0 6px}
+        article p{margin:10px 0}
+        article ul{padding-left:20px}
+        blockquote{margin:12px 0;padding:12px 14px;border-left:4px solid var(--primary);background:#f3fbf5;border-radius:10px}
+
+        aside .card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:16px;box-shadow:var(--shadow);padding:14px;margin-bottom:14px}
+        .author{display:flex;gap:12px;align-items:center;margin-top:16px;padding-top:12px;border-top:1px solid #eef2ee}
+        .avatar{width:48px;height:48px;border-radius:50%;background:#e6efe8;display:grid;place-items:center;font-weight:700;color:#47604b}
+
+        .related{margin-top:18px}
+        .related-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+        .related-list .rel div:first-child {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;      /* số dòng muốn hiển thị */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;           /* khoảng cách dòng */
+  max-height: calc(1.4em * 2);/* chiều cao tối đa = số dòng * line-height */
+}
+        .rel{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px}
+
+        footer{background:#0e1a0f;color:#d7e3d7;margin-top:32px}
+        .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
+        .copyright{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:#a6b5a6;font-size:14px}
+
+        @media(max-width:1040px){.grid{grid-template-columns:1fr}.related-list{grid-template-columns:1fr 1fr}}
+        @media(max-width:680px){.nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#ffffff;border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px;flex-direction:column}.menu-btn{display:block}.related-list{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
+
+<!-- BREADCRUMBS -->
+<div class="container">
+    <div class="breadcrumbs">
+        <a th:href="@{/}">Trang chủ</a> / <a th:href="@{/blog}">Blog</a> /
+        <span th:text="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Bài viết'">Bài viết</span>
+    </div>
+</div>
+
+<!-- HERO -->
+<header class="container hero">
+    <h1 class="title" th:text="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Tiêu đề'">Tiêu đề</h1>
+    <div class="meta">
+        <span th:if="${p != null and p.publishedAt != null}" th:text="${#temporals.format(p.publishedAt, 'dd/MM/yyyy')}">--/--/----</span>
+        <span th:if="${p == null or p.publishedAt == null}">--/--/----</span>
+        ·
+        <span th:text="${p != null and p.category != null} ? ${p.category.label} : 'Bài viết'">Danh mục</span>
+        ·
+        <span th:text="${readingMinutes != null} ? ${readingMinutes + ' phút đọc'} : '— phút đọc'">5 phút đọc</span>
+        ·
+        <span th:text="${p != null and !#strings.isEmpty(p.author)} ? ${p.author} : 'Mầm Nâu Team'">Tác giả</span>
+    </div>
+
+    <div class="cover" th:if="${p == null or p.coverUrl == null}">Ảnh cover bài viết</div>
+    <img class="cover" th:if="${p != null and p.coverUrl != null}" th:src="${p.coverUrl}" alt="Ảnh bìa bài viết" style="width:100%;height:auto;object-fit:cover"/>
+
+    <div class="backline">
+        <a class="btn-outline" th:href="@{/blog}">← Quay lại Blog</a>
+    </div>
+</header>
+
+<!-- CONTENT + SIDEBAR -->
+<section class="container grid">
+    <!-- Nội dung rich HTML -->
+    <article th:utext="${p != null and !#strings.isEmpty(p.content)} ? ${p.content} : '<p>Nội dung đang được cập nhật.</p>'">
+        <!-- Nội dung render tại đây -->
+    </article>
+
+    <aside>
+        <!-- Tác giả -->
+        <div class="card">
+            <h3>Tác giả</h3>
+            <div class="author" style="margin:0;padding:0;border:0">
+                <div class="avatar">MN</div>
+                <div>
+                    <strong th:text="${p != null and !#strings.isEmpty(p.author)} ? ${p.author} : 'Mầm Nâu Team'">Mầm Nâu Team</strong>
+                    <div style="color:var(--muted);font-size:13px">Chia sẻ kiến thức làm vườn đô thị.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chủ đề -->
+        <div class="card" th:if="${p != null and p.category != null}">
+            <h3>Chủ đề</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <a class="btn-outline" th:href="@{/blog(cat=${p.category})}" th:text="${p.category.label}">Danh mục</a>
+            </div>
+        </div>
+
+        <!-- Bài liên quan -->
+        <div class="card related" th:if="${related != null and #lists.size(related) > 0}">
+            <h3>Bài liên quan</h3>
+            <div class="related-list">
+                <a class="rel" th:each="r : ${related}" th:href="@{/blog/{slug}(slug=${r.slug})}">
+                    <div style="font-weight:700" th:text="${r.title}">Tiêu đề</div>
+                    <div style="color:var(--muted);font-size:13px" th:text="${#temporals.format(r.publishedAt,'dd/MM/yyyy')}">--/--/----</div>
+                </a>
+            </div>
+        </div>
+    </aside>
+</section>
+
+<!-- FOOTER -->
+<th:block th:replace="~{group5_template/footer :: footer}"></th:block>
+
+<script>
+    const menuBtn=document.getElementById('menuBtn');
+    const navMenu=document.getElementById('navMenu');
+    menuBtn?.addEventListener('click',()=>{const visible=getComputedStyle(navMenu).display!=='none';navMenu.style.display=visible?'none':'flex'});
+    const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
