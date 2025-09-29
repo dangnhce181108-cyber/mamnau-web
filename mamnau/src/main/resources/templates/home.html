@@ -266,10 +266,11 @@ padding : 0% 3%;
       <h3>Liên hệ & dùng thử</h3>
       <p class="lead">Để lại email, chúng tôi sẽ gửi thông tin sản phẩm thử nghiệm và ưu đãi sớm.</p>
     </div>
-    <form class="actions" onsubmit="return false;">
-      <input id="email" type="email" placeholder="Email của bạn" required
+    <form class="actions" id="ctaForm" onsubmit="return false;">
+      <input id="email" name="email" type="email" placeholder="Email của bạn" required
              style="padding:12px 14px;border-radius:12px;border:1px solid #cfe4d2;min-width:240px;"/>
       <button class="cta" id="signupBtn" type="submit">Đăng ký</button>
+      <small id="ctaMsg" style="margin-left:12px;color:#2e7d32" aria-live="polite"></small>
     </form>
   </div>
 </section>
@@ -285,6 +286,49 @@ padding : 0% 3%;
     navMenu.style.display = visible ? "none" : "flex";
   });
   document.getElementById("year").textContent = new Date().getFullYear();
+  (function () {
+    const form = document.getElementById('ctaForm');
+    const input = document.getElementById('email');
+    const btn = document.getElementById('signupBtn');
+    const msg = document.getElementById('ctaMsg');
+
+    function show(text, ok=true){
+      msg.textContent = text;
+      msg.style.color = ok ? '#2e7d32' : '#b00020';
+    }
+
+    form.addEventListener('submit', async () => {
+      const email = (input.value || '').trim();
+      if (!email) { show('Vui lòng nhập email', false); input.focus(); return; }
+
+      // Kiểm tra định dạng đơn giản phía client
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        show('Email chưa đúng định dạng', false); input.focus(); return;
+      }
+
+      btn.disabled = true; btn.textContent = 'Đang gửi...'; show('');
+
+      try {
+        const res = await fetch('/api/newsletter-signup', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json().catch(()=>({ok:false, error:'Lỗi phản hồi'}));
+        if (res.ok && data.ok) {
+          show('Đã nhận email! Chúng tôi sẽ gửi thông tin dùng thử sớm nhất.');
+          btn.textContent = 'Đã đăng ký'; btn.disabled = true;
+          input.value = '';
+        } else {
+          show(data.error || 'Gửi thất bại. Vui lòng thử lại sau.', false);
+          btn.textContent = 'Đăng ký'; btn.disabled = false;
+        }
+      } catch (e) {
+        show('Mạng không ổn. Thử lại nhé.', false);
+        btn.textContent = 'Đăng ký'; btn.disabled = false;
+      }
+    });
+  })();
 </script>
 </body>
 </html>

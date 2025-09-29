@@ -286,9 +286,25 @@
   const drawer = document.getElementById("drawer");
   const openContact = document.getElementById("openContact");
   const closeDrawer = document.getElementById("closeDrawer");
-  openContact.addEventListener("click", () => { drawer.style.display = "flex"; drawer.setAttribute('aria-hidden','false'); });
-  closeDrawer.addEventListener("click", () => { drawer.style.display = "none"; drawer.setAttribute('aria-hidden','true'); });
-  drawer.addEventListener("click", (e) => { if (e.target === drawer) { drawer.style.display = "none"; drawer.setAttribute('aria-hidden','true'); } });
+  const contactForm = document.getElementById("contactForm");
+
+  openContact.addEventListener("click", () => {
+    // Đánh dấu request đến từ trang chi tiết
+    contactForm.dataset.from = "detail";  // <-- quan trọng
+    drawer.style.display = "flex";
+    drawer.setAttribute('aria-hidden','false');
+  });
+
+  closeDrawer.addEventListener("click", () => {
+    drawer.style.display = "none";
+    drawer.setAttribute('aria-hidden','true');
+  });
+  drawer.addEventListener("click", (e) => {
+    if (e.target === drawer) {
+      drawer.style.display = "none";
+      drawer.setAttribute('aria-hidden','true');
+    }
+  });
 
   // Toast helper
   const toast = document.getElementById('toast');
@@ -370,6 +386,7 @@
     const message = msgEl.value.trim();
     const quantity = +document.getElementById("qty").value || 1;
     const product = document.querySelector(".title")?.textContent || "";
+    const from = contactForm.dataset.from || "detail";  // <-- gửi cờ
 
     const btn = document.querySelector('#contactForm button[type="submit"]');
     btn.disabled = true; btn.textContent = "Đang gửi...";
@@ -378,7 +395,7 @@
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, email, message, quantity, product })
+        body: JSON.stringify({ name, phone, email, message, quantity, product, from })
       });
 
       const data = await res.json().catch(()=> ({}));

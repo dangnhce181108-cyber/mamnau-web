@@ -1,6 +1,7 @@
 package com.example.mamnau.controller;
 
 import com.example.mamnau.service.EmailService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -50,6 +51,8 @@ public class ContactController {
         String product  = str(body.get("product"));
         String message  = str(body.get("message"));
         String quantity = str(body.get("quantity")); // có thể rỗng
+        String from     = str(body.get("from"));       // lấy cờ từ frontend
+
 
         // Validate cơ bản
         if (!StringUtils.hasText(name)) {
@@ -62,14 +65,39 @@ public class ContactController {
         // Gộp nội dung cho email (dùng template V2 của bạn)
         StringBuilder sb = new StringBuilder();
         if (StringUtils.hasText(product))  sb.append("🪴 Sản phẩm: ").append(esc(product)).append("\n");
-        if (StringUtils.hasText(quantity)) sb.append("📦 Số lượng ước muốn: ").append(esc(quantity)).append("\n");
-        if (StringUtils.hasText(phone))    sb.append("📞 Điện thoại/Zalo: ").append(esc(phone)).append("\n");
+        // ✅ Chỉ thêm số lượng nếu from == "detail"
+        if ("detail".equalsIgnoreCase(from) && StringUtils.hasText(quantity))
+            sb.append("📦 Số lượng ước muốn: ").append(esc(quantity)).append("\n");        if (StringUtils.hasText(phone))    sb.append("📞 Điện thoại/Zalo: ").append(esc(phone)).append("\n");
         if (StringUtils.hasText(message))  sb.append("\n— Ghi chú của khách —\n").append(message);
 
         boolean ok = emailService.sendContactV2(name, email, sb.toString());
         return ok
                 ? ResponseEntity.ok(Map.of("ok", true))
                 : ResponseEntity.status(500).body(Map.of("ok", false));
+    }
+    // ======== API cho trang Home (Gửi đăng kí) ========
+    @PostMapping("/api/newsletter-signup")
+    @ResponseBody
+    public ResponseEntity<?> newsletterSignup(@RequestBody Map<String, Object> body,
+                                              HttpServletRequest req) {
+        String email = str(body.get("email"));
+
+        if (!StringUtils.hasText(email)) {
+            return ResponseEntity.badRequest().body(Map.of("ok", false, "error", "Thiếu email"));
+        }
+        // Check định dạng đơn giản
+        if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            return ResponseEntity.badRequest().body(Map.of("ok", false, "error", "Email không hợp lệ"));
+        }
+
+        String ua = str(req.getHeader("User-Agent"));
+        String ip = str(req.getHeader("X-Forwarded-For"));
+        if (!StringUtils.hasText(ip)) ip = str(req.getRemoteAddr());
+
+        boolean ok = emailService.sendNewsletterSignup(email, ua, ip);
+        return ok
+                ? ResponseEntity.ok(Map.of("ok", true))
+                : ResponseEntity.status(500).body(Map.of("ok", false, "error", "Không gửi được email"));
     }
 
     // ======== Helpers ========

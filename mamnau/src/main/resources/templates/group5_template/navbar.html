@@ -93,7 +93,7 @@
             <div class="err" id="err-g5Email">Email chưa đúng định dạng.</div>
           </div>
           <div>
-            <textarea id="g5Message" rows="4" placeholder="Ghi chú: địa chỉ, thời gian nhận…"
+            <textarea id="g5Message" rows="4" placeholder="Ghi chú: số lượng, địa chỉ, thời gian nhận…"
                       aria-invalid="false"></textarea>
             <div class="hint">Nội dung ≥ 10 ký tự sẽ giúp tư vấn nhanh hơn.</div>
             <div class="err" id="err-g5Message">Vui lòng nhập nội dung (≥ 10 ký tự).</div>
@@ -129,8 +129,8 @@
       });
 
       const orderBtn = document.getElementById("globalOrderBtn");
-      const backdrop = document.getElementById("g5ContactBackdrop");
-      const closeBtn  = document.getElementById("g5Close");
+      const backdrop = document.getElementById("g5ContactBackdrop"); // <-- CHỈ KHAI BÁO 1 LẦN
+      const closeBtn  = document.getElementById("g5Close");          // <-- CHỈ KHAI BÁO 1 LẦN
       const form = document.getElementById("g5ContactForm");
       const btnSubmit = document.getElementById("g5Submit");
       const toast = document.getElementById("g5Toast");
@@ -154,7 +154,7 @@
       function validateEmail(){
         const v = emailEl.value.trim();
         if(!v){ clearErr(emailEl,'err-g5Email'); return true; } // optional
-        const ok = emailEl.checkValidity(); // HTML5 email
+        const ok = emailEl.checkValidity();
         ok ? clearErr(emailEl,'err-g5Email') : showErr(emailEl,'err-g5Email');
         return ok;
       }
@@ -175,7 +175,6 @@
       function validateAtLeastEmailOrPhone(){
         const hasAny = emailEl.value.trim() || phoneEl.value.trim();
         if(!hasAny){
-          // gợi ý: đánh dấu cả hai
           showErr(emailEl,'err-g5Email'); showErr(phoneEl,'err-g5Phone');
         }
         return !!hasAny;
@@ -209,7 +208,7 @@
           document.querySelector('meta[property="og:title"]')?.getAttribute('content') ||
           document.querySelector('h1')?.textContent ||
           document.title || "Sản phẩm Mầm Nâu";
-        form.dataset.product = productTitle.trim();
+        form.dataset.product = (productTitle || "").trim();
 
         const qty = document.getElementById("qty");
         form.dataset.quantity = qty ? (parseInt(qty.value,10)||1) : 1;
@@ -220,25 +219,32 @@
         document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
         form.reset();
-        // clear errors
         [nameEl,emailEl,phoneEl,msgEl].forEach(el=> el.setAttribute('aria-invalid','false'));
         ['err-g5Name','err-g5Email','err-g5Phone','err-g5Message'].forEach(id=>{
           const e=document.getElementById(id); e && (e.style.display='none');
         });
       }
 
-      orderBtn?.addEventListener('click', e=>{ e.preventDefault(); openModal(); });
+      // ====== MỞ MODAL TỪ NAVBAR: set from = 'navbar'
+      orderBtn?.addEventListener('click', e=>{
+        e.preventDefault();
+        form.dataset.from = 'navbar';
+        openModal();
+      });
+
+      // đóng modal
       closeBtn?.addEventListener('click', closeModal);
       backdrop.addEventListener('click', e=> { if(e.target===backdrop) closeModal(); });
 
+      // ===== SUBMIT
       form.addEventListener('submit', async e=>{
         e.preventDefault();
 
         const okName = validateName();
         const okEmail = validateEmail();
         const okPhone = validatePhone();
-        const okAny = validateAtLeastEmailOrPhone();
-        const okMsg  = validateMsg(); // không bắt buộc, chỉ cảnh báo nếu < 10
+        const okAny  = validateAtLeastEmailOrPhone();
+        const okMsg  = validateMsg(); // optional
 
         if(!(okName && okEmail && okPhone && okAny)){
           showToast("Vui lòng kiểm tra lại thông tin.", true);
@@ -252,6 +258,7 @@
         const message  = msgEl.value.trim();
         const product  = form.dataset.product || "Sản phẩm Mầm Nâu";
         const quantity = parseInt(form.dataset.quantity||"1",10) || 1;
+        const from     = form.dataset.from || 'navbar';
 
         btnSubmit.disabled = true; const old = btnSubmit.textContent; btnSubmit.textContent = "Đang gửi...";
 
@@ -259,7 +266,7 @@
           const res = await fetch("/api/contact", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, phone, email, message, quantity, product })
+            body: JSON.stringify({ name, phone, email, message, quantity, product, from })
           });
           const data = await res.json().catch(()=> ({}));
           if(res.ok && data.ok){
