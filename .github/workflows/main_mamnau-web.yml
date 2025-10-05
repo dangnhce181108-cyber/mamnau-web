@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read   # required for actions/checkout
+      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -26,21 +26,21 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: mamnau/target/*.jar          # JAR nằm trong mamnau/target
+          path: mamnau/target/*.jar
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    timeout-minutes: 20                      # ⬅️ giới hạn thời gian để tránh treo
+    timeout-minutes: 20
     permissions:
-      id-token: write                        # required for azure/login (OIDC)
+      id-token: write
       contents: read
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-          path: .                            # tải JAR về thư mục hiện tại
+          path: .
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -54,6 +54,5 @@ jobs:
         with:
           app-name: mamnau-web
           slot-name: Production
-          package: '*.jar'                   # ✅ JAR vừa download nằm tại thư mục hiện tại
-          app-url: https://mamnau-web-aqgthadcgvakdef9.southeastasia-01.azurewebsites.net
-                                             # ✅ ép runner ping host gốc Azure
+          package: '*.jar'
+          restart: true     # tùy chọn: đảm bảo app restart sau deploy
