@@ -5,31 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Title with safe fallback -->
-    <title th:text="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Bài viết — Mầm Xanh'">
+    <title th:text="${(p != null and !#strings.isEmpty(p.title)) ? p.title : 'Bài viết — Mầm Xanh'}">
         Bài viết — Mầm Xanh
     </title>
 
     <!-- SEO basic -->
-    <meta name="description" th:if="${p != null and !#strings.isEmpty(p.excerpt)}" th:content="${p.excerpt}" />
-    <meta name="description" th:if="${p == null or #strings.isEmpty(p.excerpt)}" content="Chia sẻ kiến thức làm vườn đô thị, ủ compost từ vỏ trái cây ở chợ cùng Mầm Xanh — Mầm xanh cho đất, trái lành cho đời." />
+    <meta name="description"
+          th:if="${p != null and !#strings.isEmpty(p.excerpt)}"
+          th:content="${p.excerpt}" />
+    <meta name="description"
+          th:if="${p == null or #strings.isEmpty(p.excerpt)}"
+          content="Chia sẻ kiến thức làm vườn đô thị, ủ compost từ vỏ trái cây ở chợ cùng Mầm Xanh — Mầm xanh cho đất, trái lành cho đời." />
 
     <!-- Canonical -->
-    <link rel="canonical" th:if="${p != null and !#strings.isEmpty(p.slug)}" th:href="@{/blog/{slug}(slug=${p.slug})}" />
-    <link rel="canonical" th:if="${p == null or #strings.isEmpty(p.slug)}" href="/blog" />
+    <link rel="canonical"
+          th:if="${p != null and !#strings.isEmpty(p.slug)}"
+          th:href="@{/blog/{slug}(slug=${p.slug})}" />
+    <link rel="canonical"
+          th:if="${p == null or #strings.isEmpty(p.slug)}"
+          href="/blog" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="article" />
-    <meta property="og:title" th:content="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Bài viết — Mầm Xanh'" />
-    <meta property="og:description" th:if="${p != null and !#strings.isEmpty(p.excerpt)}" th:content="${p.excerpt}" />
-    <meta property="og:url" th:if="${p != null and !#strings.isEmpty(p.slug)}" th:content="@{/blog/{slug}(slug=${p.slug})}" />
-    <meta property="og:image" th:if="${p != null and p.coverUrl != null}" th:content="${p.coverUrl}" />
+    <meta property="og:title"
+          th:content="${(p != null and !#strings.isEmpty(p.title)) ? p.title : 'Bài viết — Mầm Xanh'}" />
+    <meta property="og:description"
+          th:if="${p != null and !#strings.isEmpty(p.excerpt)}"
+          th:content="${p.excerpt}" />
+    <meta property="og:url"
+          th:if="${p != null and !#strings.isEmpty(p.slug)}"
+          th:content="@{/blog/{slug}(slug=${p.slug})}" />
+    <meta property="og:image"
+          th:if="${p != null and p.coverUrl != null}"
+          th:content="${p.coverUrl}" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" th:content="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Bài viết — Mầm Xanh'" />
-    <meta name="twitter:description" th:if="${p != null and !#strings.isEmpty(p.excerpt)}" th:content="${p.excerpt}" />
-    <meta name="twitter:image" th:if="${p != null and p.coverUrl != null}" th:content="${p.coverUrl}" />
+    <meta name="twitter:title"
+          th:content="${(p != null and !#strings.isEmpty(p.title)) ? p.title : 'Bài viết — Mầm Xanh'}" />
+    <meta name="twitter:description"
+          th:if="${p != null and !#strings.isEmpty(p.excerpt)}"
+          th:content="${p.excerpt}" />
+    <meta name="twitter:image"
+          th:if="${p != null and p.coverUrl != null}"
+          th:content="${p.coverUrl}" />
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -41,7 +62,8 @@
           --ring:rgba(46,125,50,.25);--shadow:0 10px 25px rgba(0,0,0,.06);
           --radius:16px;--maxw:960px
         }
-        *{box-sizing:border-box}html,body{margin:0;padding:0}
+        *{box-sizing:border-box}
+        html,body{margin:0;padding:0}
         body{
           font-family:'Be Vietnam Pro',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
           background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));
@@ -60,7 +82,8 @@
         .brand span{letter-spacing:.3px}
         .brand small{font-weight:600;color:var(--accent);margin-left:6px}
         .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
-        .nav a{font-weight:600}.nav a:hover{color:var(--primary)}
+        .nav a{font-weight:600;}
+        .nav a:hover{color:var(--primary)}
         .cta{display:inline-flex;align-items:center;gap:10px;background:var(--primary);
           color:#fff;padding:10px 16px;border-radius:12px;box-shadow:0 8px 20px var(--ring)}
         .menu-btn{display:none;border:0;background:transparent;font-size:26px}
@@ -69,52 +92,31 @@
         .hero{padding:20px 0 8px}
         .title{font-size:clamp(26px,4.6vw,40px);line-height:1.2;margin:0}
         .meta{color:var(--muted);font-size:14px;display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
-        .cover{
-          aspect-ratio:16/9;border-radius:16px;
-          background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);
-          border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow);
-          display:grid;place-items:center;color:#3a2d22;font-weight:700;overflow:hidden
-        }
-        .cover.img{display:block;width:100%;height:auto;object-fit:cover;transition:transform .6s ease}
-        .cover-wrap:hover .cover.img{transform:scale(1.02)}
+        .cover{aspect-ratio:16/9;border-radius:16px;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);
+          border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow);display:grid;place-items:center;color:#3a2d22;font-weight:700}
 
         .backline{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
-        .btn-outline{
-          display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;
-          border:1px solid #cfe4d2;background:#fff;font-weight:700;transition:transform .15s ease, background .15s ease
-        }
-        .btn-outline:hover{transform:translateY(-1px);background:#f6fbf7}
+        .btn-outline{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:1px solid #cfe4d2;background:#fff;font-weight:700}
 
         .grid{display:grid;grid-template-columns:2fr 1fr;gap:22px;margin-top:14px}
-        article{
-          background:var(--surface);border:1px solid rgba(0,0,0,.06);
-          border-radius:16px;box-shadow:var(--shadow);padding:18px
-        }
+        article{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:16px;box-shadow:var(--shadow);padding:18px}
         article h2{font-size:22px;margin:18px 0 8px}
         article h3{font-size:18px;margin:16px 0 6px}
         article p{margin:10px 0}
         article ul{padding-left:20px}
         blockquote{margin:12px 0;padding:12px 14px;border-left:4px solid var(--primary);background:#f3fbf5;border-radius:10px}
 
-        aside .card{
-          background:#fff;border:1px solid rgba(0,0,0,.06);
-          border-radius:16px;box-shadow:var(--shadow);padding:14px;margin-bottom:14px;transition:transform .2s ease
-        }
-        aside .card:hover{transform:translateY(-2px)}
+        aside .card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:16px;box-shadow:var(--shadow);padding:14px;margin-bottom:14px}
         .author{display:flex;gap:12px;align-items:center;margin-top:16px;padding-top:12px;border-top:1px solid #eef2ee}
         .avatar{width:48px;height:48px;border-radius:50%;background:#e6efe8;display:grid;place-items:center;font-weight:700;color:#47604b}
 
         .related{margin-top:18px}
         .related-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-        .rel{
-          background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px;
-          transition:transform .18s ease, box-shadow .18s ease
-        }
-        .rel:hover{transform:translateY(-2px)}
         .related-list .rel div:first-child{
-          display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-          overflow:hidden;text-overflow:ellipsis;line-height:1.4;max-height:calc(1.4em * 2)
+          display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+          overflow:hidden; text-overflow:ellipsis; line-height:1.4; max-height:calc(1.4em * 2);
         }
+        .rel{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px}
 
         footer{background:#0e1a0f;color:#d7e3d7;margin-top:32px}
         .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
@@ -123,13 +125,15 @@
         @media(max-width:1040px){.grid{grid-template-columns:1fr}.related-list{grid-template-columns:1fr 1fr}}
         @media(max-width:680px){
           .nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#ffffff;border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px;flex-direction:column}
-          .menu-btn{display:block}.related-list{grid-template-columns:1fr}
+          .menu-btn{display:block}
+          .related-list{grid-template-columns:1fr}
         }
 
-        /* ===== Scroll-reveal (fade-up + stagger) ===== */
-        @media (prefers-reduced-motion:no-preference){
-          .reveal{opacity:0;transform:translateY(18px);will-change:opacity,transform}
-          .in-view .reveal{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+        /* ===== Reveal on scroll ===== */
+        .reveal{opacity:0; transform:translateY(14px); will-change:opacity,transform; transition:opacity .6s ease, transform .6s ease;}
+        .reveal.show{opacity:1; transform:none;}
+        @media (prefers-reduced-motion: reduce){
+          .reveal{transition:none !important; transform:none !important; opacity:1 !important;}
         }
     </style>
 </head>
@@ -138,60 +142,58 @@
 <th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
 
 <!-- BREADCRUMBS -->
-<div class="container observe">
-    <div class="breadcrumbs reveal">
-        <a th:href="@{/}">Trang chủ</a> / <a th:href="@{/blog}">Blog</a> /
-        <span th:text="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Bài viết'">Bài viết</span>
+<div class="container">
+    <div class="breadcrumbs">
+        <a th:href="@{/}">Trang chủ</a> /
+        <a th:href="@{/blog}">Blog</a> /
+        <span th:text="${(p != null and !#strings.isEmpty(p.title)) ? p.title : 'Bài viết'}">Bài viết</span>
     </div>
 </div>
 
 <!-- HERO -->
-<header class="container hero observe">
-    <h1 class="title reveal" th:text="${p != null and !#strings.isEmpty(p.title)} ? ${p.title} : 'Tiêu đề'">Tiêu đề</h1>
-    <div class="meta reveal">
+<header class="container hero">
+    <h1 class="title" th:text="${(p != null and !#strings.isEmpty(p.title)) ? p.title : 'Tiêu đề'}">Tiêu đề</h1>
+    <div class="meta">
         <span th:if="${p != null and p.publishedAt != null}" th:text="${#temporals.format(p.publishedAt, 'dd/MM/yyyy')}">--/--/----</span>
         <span th:if="${p == null or p.publishedAt == null}">--/--/----</span>
         ·
-        <span th:text="${p != null and p.category != null} ? ${p.category.label} : 'Bài viết'">Danh mục</span>
+        <span th:text="${(p != null and p.category != null) ? p.category.label : 'Bài viết'}">Danh mục</span>
         ·
-        <span th:text="${readingMinutes != null} ? ${readingMinutes + ' phút đọc'} : '— phút đọc'">5 phút đọc</span>
+        <span th:text="${(readingMinutes != null) ? (readingMinutes + ' phút đọc') : '— phút đọc'}">5 phút đọc</span>
         ·
-        <span th:text="${p != null and !#strings.isEmpty(p.author)} ? ${p.author} : 'Mầm Xanh Team'">Tác giả</span>
+        <span th:text="${(p != null and !#strings.isEmpty(p.author)) ? p.author : 'Mầm Xanh Team'}">Tác giả</span>
     </div>
 
-    <div class="cover-wrap reveal">
-        <div class="cover" th:if="${p == null or p.coverUrl == null}">Ảnh bìa bài viết</div>
-        <img class="cover img" th:if="${p != null and p.coverUrl != null}" th:src="${p.coverUrl}" alt="Ảnh bìa bài viết"/>
-    </div>
+    <div class="cover" th:if="${p == null or p.coverUrl == null}">Ảnh bìa bài viết</div>
+    <img class="cover" th:if="${p != null and p.coverUrl != null}" th:src="${p.coverUrl}" alt="Ảnh bìa bài viết" style="width:100%;height:auto;object-fit:cover"/>
 
-    <div class="backline reveal">
+    <div class="backline">
         <a class="btn-outline" th:href="@{/blog}">← Quay lại Blog</a>
     </div>
 </header>
 
 <!-- CONTENT + SIDEBAR -->
-<section class="container grid observe">
+<section class="container grid">
     <!-- Nội dung rich HTML -->
-    <article class="reveal"
-             th:utext="${p != null and !#strings.isEmpty(p.content)} ? ${p.content} : '<p>Nội dung đang được cập nhật.</p>'">
+    <article th:utext="${(p != null and !#strings.isEmpty(p.content)) ? p.content : '<p>Nội dung đang được cập nhật.</p>'}">
         <!-- Nội dung render tại đây -->
     </article>
 
     <aside>
         <!-- Tác giả -->
-        <div class="card reveal">
+        <div class="card">
             <h3>Tác giả</h3>
             <div class="author" style="margin:0;padding:0;border:0">
                 <div class="avatar">MX</div>
                 <div>
-                    <strong th:text="${p != null and !#strings.isEmpty(p.author)} ? ${p.author} : 'Mầm Xanh Team'">Mầm Xanh Team</strong>
+                    <strong th:text="${(p != null and !#strings.isEmpty(p.author)) ? p.author : 'Mầm Xanh Team'}">Mầm Xanh Team</strong>
                     <div style="color:var(--muted);font-size:13px">Chia sẻ kiến thức làm vườn, tận dụng vỏ trái cây ở chợ để ủ phân xanh.</div>
                 </div>
             </div>
         </div>
 
         <!-- Chủ đề -->
-        <div class="card reveal" th:if="${p != null and p.category != null}">
+        <div class="card" th:if="${p != null and p.category != null}">
             <h3>Chủ đề</h3>
             <div style="display:flex;flex-wrap:wrap;gap:8px">
                 <a class="btn-outline" th:href="@{/blog(cat=${p.category})}" th:text="${p.category.label}">Danh mục</a>
@@ -199,10 +201,10 @@
         </div>
 
         <!-- Bài liên quan -->
-        <div class="card related reveal" th:if="${related != null and #lists.size(related) > 0}">
+        <div class="card related" th:if="${related != null and #lists.size(related) > 0}">
             <h3>Bài liên quan</h3>
             <div class="related-list">
-                <a class="rel reveal" th:each="r : ${related}" th:href="@{/blog/{slug}(slug=${r.slug})}">
+                <a class="rel" th:each="r : ${related}" th:href="@{/blog/{slug}(slug=${r.slug})}">
                     <div style="font-weight:700" th:text="${r.title}">Tiêu đề</div>
                     <div style="color:var(--muted);font-size:13px" th:text="${#temporals.format(r.publishedAt,'dd/MM/yyyy')}">--/--/----</div>
                 </a>
@@ -215,40 +217,66 @@
 <th:block th:replace="~{group5_template/footer :: footer}"></th:block>
 
 <script>
-    // Navbar mobile + year
-    const menuBtn=document.getElementById('menuBtn');
-    const navMenu=document.getElementById('navMenu');
-    menuBtn?.addEventListener('click',()=>{
-      const visible=getComputedStyle(navMenu).display!=='none';
-      navMenu.style.display=visible?'none':'flex';
-    });
-    const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+    // --- Menu mobile ---
+    const menuBtn = document.getElementById('menuBtn');
+    const navMenu = document.getElementById('navMenu');
+    if (menuBtn && navMenu) {
+      menuBtn.addEventListener('click', () => {
+        const visible = getComputedStyle(navMenu).display !== 'none';
+        navMenu.style.display = visible ? 'none' : 'flex';
+      });
+    }
 
-    // ===== Scroll-reveal (IntersectionObserver + stagger) =====
-    (function(){
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // --- Năm footer ---
+    const y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
 
-      // đảm bảo các khối chính được observe
-      document.querySelectorAll('.breadcrumbs, header.hero, .grid').forEach(el=>{
-        const parent = el.closest('.observe') || el.parentElement;
-        if (parent && !parent.classList.contains('observe')) parent.classList.add('observe');
-        if (!el.classList.contains('reveal')) el.classList.add('reveal');
+    // --- Reveal on scroll (fade + slide-up + stagger) ---
+    (function setupReveal() {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return; // tắt animation nếu người dùng chọn reduce motion
+
+      // Danh sách selector + cấu hình: [selector, baseDelay(ms), stagger?]
+      const groups = [
+        ['.breadcrumbs', 0, false],
+        ['.hero .title', 0, false],
+        ['.hero .meta', 80, false],
+        ['.hero .cover', 140, false],
+        ['.backline', 180, false],
+
+        ['article > *', 0, true],          // Nội dung bài viết: stagger từng phần tử
+        ['aside .card', 0, true],          // Card sidebar
+        ['.related-list .rel', 0, true],   // Item bài liên quan
+        ['footer .footer-wrap > *', 0, true]
+      ];
+
+      const toObserve = [];
+      groups.forEach(([selector, baseDelay = 0, stagger = false]) => {
+        const nodes = document.querySelectorAll(selector);
+        nodes.forEach((el, idx) => {
+          el.classList.add('reveal');
+          const delay = stagger ? baseDelay + Math.min(idx * 70, 420) : baseDelay;
+          el.style.transitionDelay = (delay / 1000) + 's';
+          toObserve.push(el);
+        });
       });
 
-      const blocks=document.querySelectorAll('.observe');
-      const io=new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-          if(entry.isIntersecting){
-            const root=entry.target;
-            root.classList.add('in-view');
-            const kids=root.querySelectorAll('.reveal');
-            kids.forEach((el,i)=> el.style.transitionDelay = `${Math.min(i*80, 600)}ms`);
-            io.unobserve(root); // chỉ animate 1 lần
+      if (!('IntersectionObserver' in window)) {
+        // Fallback: nếu không hỗ trợ IO thì show luôn
+        toObserve.forEach(el => el.classList.add('show'));
+        return;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            io.unobserve(entry.target); // chỉ animate 1 lần
           }
         });
-      },{threshold:0.15});
+      }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
 
-      blocks.forEach(b=>io.observe(b));
+      toObserve.forEach(el => io.observe(el));
     })();
 </script>
 </body>

@@ -214,7 +214,7 @@
 <section id="san-pham" class="section observe">
   <div class="container product" th:if="${#lists.isEmpty(products) == false}">
     <div class="media reveal">
-      <img src="/img/spminhhoa.png" alt="Ảnh gói phân hữu cơ Mầm Xanh từ vỏ trái cây">
+      <img src="/img/spminhhoa.png" alt="Đang cập nhật">
     </div>
     <div>
       <h2 class="reveal">Sản phẩm Mầm Xanh</h2>
@@ -238,13 +238,55 @@
 <!-- QUY TRÌNH -->
 <section id="quy-trinh" class="section observe">
   <div class="container">
-    <h2 class="reveal">Quy trình Mầm Xanh</h2>
-    <p class="lead reveal">Minh bạch từ nguồn vỏ trái cây ở chợ đến thành phẩm an toàn.</p>
+    <h2 class="reveal">Quy trình Mầm Xanh (vỏ trái cây → phân hữu cơ)</h2>
+    <p class="lead reveal">Tối ưu cho phụ phẩm chợ: vỏ cam/chuối/dứa..., kiểm soát mùi, an toàn cho đất.</p>
+
     <div class="steps">
-      <div class="step reveal"><div class="num">1</div><strong>Thu gom</strong><br/><small>Hợp tác tiểu thương chợ; phân luồng rác tại nguồn.</small></div>
-      <div class="step reveal"><div class="num">2</div><strong>Sơ tuyển & làm sạch</strong><br/><small>Loại tạp, ép/giảm ẩm, kiểm soát mùi.</small></div>
-      <div class="step reveal"><div class="num">3</div><strong>Ủ hiếu khí & phối trộn</strong><br/><small>Kết hợp phụ liệu hữu cơ an toàn tạo mùn ổn định.</small></div>
-      <div class="step reveal"><div class="num">4</div><strong>Đóng gói & truy xuất</strong><br/><small>Kiểm định lô, cân nặng, thông tin nguồn gốc.</small></div>
+      <!-- 1 -->
+      <div class="step reveal">
+        <div class="num">1</div>
+        <strong>Thu gom & phân loại</strong><br/>
+        <small>Chỉ lấy phụ phẩm thực vật sạch (vỏ trái cây, rau lá). Loại bỏ nhựa, kim loại, xương, dầu mỡ.</small>
+      </div>
+
+      <!-- 2 -->
+      <div class="step reveal">
+        <div class="num">2</div>
+        <strong>Phối trộn C:N ≈ 25–30:1</strong><br/>
+        <small>Trộn <em>“chất nâu”</em> (lá khô, rơm, giấy không mực, mùn cưa…) nhiều hơn <em>“chất xanh”</em> (vỏ trái cây, rau tươi) để tránh mùi và cân bằng vi sinh.</small>
+      </div>
+
+      <!-- 3 -->
+      <div class="step reveal">
+        <div class="num">3</div>
+        <strong>Dựng đống ủ thoáng khí</strong><br/>
+        <small>Lớp đáy thông khí (cành/rơm) → lớp xanh ~20&nbsp;cm → lớp nâu ~20&nbsp;cm. Rắc men vi sinh (nếu có). Tưới ẩm 50–60% (bóp tay rịn nhẹ).</small>
+      </div>
+
+      <!-- 4 -->
+      <div class="step reveal">
+        <div class="num">4</div>
+        <strong>Ủ hiếu khí & đảo trộn</strong><br/>
+        <small>0–5&nbsp;ngày: 35–45&nbsp;°C khởi động · 5–25&nbsp;ngày: 50–70&nbsp;°C diệt mầm bệnh. Đảo 1&nbsp;lần/tuần để đưa oxy, hạ điểm nóng, tránh yếm khí.</small>
+      </div>
+
+      <!-- 5 -->
+      <div class="step reveal">
+        <div class="num">5</div>
+        <strong>Ủ chín & sàng lọc</strong><br/>
+        <small>3–8&nbsp;tuần: nhiệt hạ về môi trường. Thành phẩm tơi xốp, nâu đậm, mùi đất dễ chịu. Sàng bỏ tạp, hạt lớn.</small>
+      </div>
+
+      <!-- 6 -->
+      <div class="step reveal">
+        <div class="num">6</div>
+        <strong>Đóng gói & truy xuất</strong><br/>
+        <small>Ủ “nghỉ” thêm 2–3&nbsp;tuần (tránh cháy rễ), cân – dán nhãn lô, bảo quản khô thoáng, ghi nguồn gốc phụ phẩm chợ.</small>
+      </div>
+    </div>
+
+    <div class="quote reveal" style="margin-top:16px">
+      <p><strong>Ghi chú nhanh:</strong> Không cho thịt, cá, dầu mỡ; không rác vô cơ. Giữ ẩm đều nhưng không sũng nước; che mưa; đảo định kỳ quyết định chất lượng.</p>
     </div>
   </div>
 </section>
