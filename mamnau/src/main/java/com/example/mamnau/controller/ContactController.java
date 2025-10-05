@@ -31,7 +31,7 @@ public class ContactController {
                                 Model model) {
         boolean ok = emailService.sendContact(name, email, message);
         model.addAttribute("brandName", "Mầm Xanh");
-        model.addAttribute("tagline", "phân bón từ rác thải ở chợ (vỏ trái cây) • Mầm xanh cho đất – Trái lành cho đời");
+        model.addAttribute("tagline", "phân bón từ vỏ trái cây");
         if (ok) {
             model.addAttribute("success", "Cảm ơn bạn! Chúng tôi đã nhận được liên hệ.");
         } else {
