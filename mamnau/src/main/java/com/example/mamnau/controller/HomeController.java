@@ -17,11 +17,12 @@ public class HomeController {
 
     @GetMapping("/")
     public String landing(Model model) {
-        model.addAttribute("brandName", "Mầm Nâu");
-        model.addAttribute("tagline", "phân hữu cơ từ bã cà phê");
+        model.addAttribute("brandName", "Mầm Xanh");
+        model.addAttribute("tagline", "phân bón từ vỏ trái cây");
         model.addAttribute("products", productService.getLatestActiveProducts());
         return "home";
     }
+
     // Xem sản phẩm bằng slug (đang có)
     @GetMapping("/san-pham/{slug}")
     public String productDetailBySlug(@PathVariable String slug, Model model) {
@@ -44,31 +45,30 @@ public class HomeController {
 
     private void addCommonAttributes(Model model, com.example.mamnau.model.Product p) {
         model.addAttribute("p", p);
-        model.addAttribute("title", p.getName() + " — Mầm Nâu");
+        model.addAttribute("title", p.getName() + " — Mầm Xanh");
         model.addAttribute("desc",
                 (p.getShortDesc() != null && !p.getShortDesc().isBlank())
                         ? p.getShortDesc()
-                        : "Chi tiết sản phẩm Mầm Nâu");
-        model.addAttribute("brandName", "Mầm Nâu");
-        model.addAttribute("tagline", "phân hữu cơ từ bã cà phê");
+                        : "Chi tiết sản phẩm Mầm Xanh (phân bón từ vỏ trái cây)");
+        model.addAttribute("brandName", "Mầm Xanh");
+        model.addAttribute("tagline", "phân bón từ vỏ trái cây");
     }
 
     @GetMapping("/faq")
     public String faq(Model model) {
-        model.addAttribute("title", "FAQ — Mầm Nâu");
-        model.addAttribute("brandName", "Mầm Nâu");
-        model.addAttribute("tagline", "phân hữu cơ từ bã cà phê"); // ⬅️ thêm dòng này
-        model.addAttribute("desc", "Câu hỏi thường gặp về phân hữu cơ từ bã cà phê Mầm Nâu: sử dụng, bảo quản, an toàn, đặt mua.");
+        model.addAttribute("title", "FAQ — Mầm Xanh");
+        model.addAttribute("brandName", "Mầm Xanh");
+        model.addAttribute("tagline", "phân bón từ vỏ trái cây");
+        model.addAttribute("desc", "Câu hỏi thường gặp về phân bón Mầm Xanh: tái chế vỏ trái cây từ chợ thành phân hữu cơ, cách dùng, bảo quản, an toàn, đặt mua.");
         return "faq";
     }
 
-
     @GetMapping("/about")
     public String about(Model model) {
-        model.addAttribute("brandName", "Mầm Nâu");
-        model.addAttribute("tagline", "phân hữu cơ từ bã cà phê");
-        model.addAttribute("title", "Về chúng tôi — Mầm Nâu");
-        model.addAttribute("desc", "Giới thiệu Mầm Nâu: hành trình biến bã cà phê thành phân hữu cơ, sứ mệnh và tầm nhìn xanh.");
+        model.addAttribute("brandName", "Mầm Xanh");
+        model.addAttribute("tagline", "phân bón từ vỏ trái cây");
+        model.addAttribute("title", "Về chúng tôi — Mầm Xanh");
+        model.addAttribute("desc", "Giới thiệu Mầm Xanh: hành trình tái chế vỏ trái cây ở chợ thành phân bón hữu cơ, sứ mệnh và tầm nhìn xanh.");
         return "about"; // templates/about.html
     }
 }

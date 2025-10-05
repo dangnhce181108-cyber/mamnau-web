@@ -3,95 +3,97 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title th:text="${title} ?: 'FAQ — Mầm Nâu'">FAQ — Mầm Nâu</title>
-    <meta
-            name="description"
-            content="Câu hỏi thường gặp về phân hữu cơ từ bã cà phê Mầm Nâu: sử dụng, bảo quản, an toàn, đặt mua."
-    />
+    <title th:text="${title} ?: 'FAQ — Mầm Xanh'">FAQ — Mầm Xanh</title>
+    <meta name="description" content="Câu hỏi thường gặp về phân bón Mầm Xanh: tái chế vỏ trái cây từ chợ thành phân hữu cơ, cách dùng, bảo quản, an toàn, đặt mua." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-            href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap"
-            rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
     <style>
         :root {
-          --bg: #f7fbf7;
-          --surface: #fff;
-          --text: #243522;
-          --muted: #5b6b57;
-          --primary: #2e7d32;
-          --primary-200: #a8d5b8;
-          --accent: #6b4f3b;
-          --accent-100: #efe5db;
-          --ring: rgba(46, 125, 50, 0.25);
-          --shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-          --radius: 16px;
-          --maxw: 1140px;
+          --bg:#f7fbf7; --surface:#fff; --text:#243522; --muted:#5b6b57;
+          --primary:#2e7d32; --primary-200:#a8d5b8; --accent:#6b4f3b; --accent-100:#efe5db;
+          --ring:rgba(46,125,50,.25); --shadow:0 10px 25px rgba(0,0,0,.06);
+          --radius:16px; --maxw:1140px;
         }
-        * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; }
-        body {
-          font-family: "Be Vietnam Pro", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-          background: linear-gradient(180deg, var(--bg), #fff 40%, var(--accent-100));
-          color: var(--text); line-height: 1.6;
+        *{box-sizing:border-box}
+        html,body{margin:0;padding:0}
+        body{
+          font-family:"Be Vietnam Pro",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+          background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));
+          color:var(--text); line-height:1.6;
         }
-        a { color: inherit; text-decoration: none; }
-        .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+        a{color:inherit;text-decoration:none}
+        .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
 
         /* NAVBAR */
-    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
-      backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
-    .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
-    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
-      background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
-    .brand span{letter-spacing:.3px}
-    .brand small{font-weight:600;color:var(--accent);margin-left:6px}
-    .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
-    .nav a{font-weight:600;}.nav a:hover{color:var(--primary)}
-    .cta{display:inline-flex;align-items:center;gap:10px;background:var(--primary);
-      color:#fff;padding:10px 16px;border-radius:12px;box-shadow:0 8px 20px var(--ring)}
-    .menu-btn{display:none;border:0;background:transparent;font-size:26px}
+        .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
+          backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+        .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+        .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+        .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+          background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
+        .brand span{letter-spacing:.3px}
+        .brand small{font-weight:600;color:var(--accent);margin-left:6px}
+        .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+        .nav a{font-weight:600}.nav a:hover{color:var(--primary)}
+        .cta{display:inline-flex;align-items:center;gap:10px;background:var(--primary);color:#fff;
+          padding:10px 16px;border-radius:12px;box-shadow:0 8px 20px var(--ring)}
+        .menu-btn{display:none;border:0;background:transparent;font-size:26px}
 
         /* HERO */
-        .hero { padding:64px 0; text-align:center; }
-        .hero h1 { font-size: clamp(28px, 5vw, 44px); margin:0; }
-        .hero p { color: var(--muted); max-width:65ch; margin:10px auto 0; }
+        .hero{padding:64px 0;text-align:center}
+        .hero h1{font-size:clamp(28px,5vw,44px);margin:0}
+        .hero p{color:var(--muted);max-width:65ch;margin:10px auto 0}
 
-        /* SEARCH + CATEGORIES */
-        .tools { padding:8px 0 24px; }
-        .grid-tools { display:grid; grid-template-columns:1.2fr 0.8fr; gap:16px; }
-        .search { background: var(--surface); border:1px solid rgba(0,0,0,.06); border-radius:14px;
-          padding:12px 14px; display:flex; gap:10px; align-items:center; box-shadow: var(--shadow); }
-        .search input { flex:1; border:0; outline:none; font-size:16px; }
-        .cats { display:flex; gap:8px; flex-wrap:wrap; }
-        .chip { background:#e9f5ec; border:1px solid #d6ebdb; color:#2d5b31; padding:8px 12px; border-radius:999px;
-          font-weight:700; font-size:13px; cursor:pointer; }
-        .chip.active { box-shadow:0 0 0 4px rgba(46,125,50,.08); }
+        /* TOOLS */
+        .tools{padding:8px 0 24px}
+        .grid-tools{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+        .search{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:14px;
+          padding:12px 14px;display:flex;gap:10px;align-items:center;box-shadow:var(--shadow)}
+        .search input{flex:1;border:0;outline:none;font-size:16px}
+        .cats{display:flex;gap:8px;flex-wrap:wrap}
+        .chip{background:#e9f5ec;border:1px solid #d6ebdb;color:#2d5b31;padding:8px 12px;border-radius:999px;
+          font-weight:700;font-size:13px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease}
+        .chip:hover{transform:translateY(-1px)}
+        .chip.active{box-shadow:0 0 0 4px rgba(46,125,50,.08)}
 
         /* FAQ LIST */
-        .faq { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-        details { background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:14px; padding:12px 14px; box-shadow: var(--shadow); }
-        summary { cursor:pointer; font-weight:700; color:var(--text); }
-        .tag { display:inline-block; margin-top:8px; background:#f3efe9; color:#6b4f3b; padding:4px 8px;
-          border-radius:999px; font-size:12px; font-weight:700; }
+        .faq{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        details{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px 14px;
+          box-shadow:var(--shadow);transition:transform .18s ease}
+        details:hover{transform:translateY(-2px)}
+        summary{cursor:pointer;font-weight:700;color:var(--text);list-style:none}
+        summary::-webkit-details-marker{display:none}
+        .tag{display:inline-block;margin-top:8px;background:#f3efe9;color:#6b4f3b;padding:4px 8px;border-radius:999px;
+          font-size:12px;font-weight:700}
 
         /* CONTACT CTA */
-        .cta-block { margin-top:28px; background: linear-gradient(135deg, #eaf4ee, #fff); padding:24px; border-radius:18px;
-          border:1px solid rgba(0,0,0,.06); display:flex; align-items:center; justify-content:space-between; gap:18px; }
+        .cta-block{margin-top:28px;background:linear-gradient(135deg,#eaf4ee,#fff);padding:24px;border-radius:18px;
+          border:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;gap:18px}
 
         /* FOOTER */
-        footer { background:#0e1a0f; color:#d7e3d7; margin-top:40px; }
-        .footer-wrap { display:grid; grid-template-columns:2fr 1fr 1fr; gap:20px; padding:28px 0; }
-        .copyright { border-top:1px solid rgba(255,255,255,.1); padding:16px 0; color:#a6b5a6; font-size:14px; }
+        footer{background:#0e1a0f;color:#d7e3d7;margin-top:40px}
+        .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
+        .copyright{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:#a6b5a6;font-size:14px}
 
-        @media (max-width: 980px) { .faq { grid-template-columns:1fr; } .grid-tools { grid-template-columns:1fr; } }
-        @media (max-width: 680px) {
-          .nav ul { display:none; position:absolute; inset:64px 0 auto 0; background:#ffffff; border-bottom:1px solid rgba(0,0,0,.06);
-            padding:16px 20px; flex-direction:column; }
-          .menu-btn { display:block; }
+        @media (max-width:980px){.faq{grid-template-columns:1fr}.grid-tools{grid-template-columns:1fr}}
+        @media (max-width:680px){
+          .nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);
+            padding:16px 20px;flex-direction:column}
+          .menu-btn{display:block}
         }
+
+        /* ===== Scroll-reveal (fade-up + stagger) ===== */
+        @media (prefers-reduced-motion:no-preference){
+          .reveal{opacity:0;transform:translateY(18px);will-change:opacity,transform}
+          .in-view .reveal{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+        }
+
+        /* ===== Smooth expand/collapse for <details> ===== */
+        .faq .content{overflow:hidden;max-height:0;opacity:.0;transform:translateY(6px);
+          transition:max-height .35s ease, opacity .35s ease, transform .35s ease}
+        details[open] .content{opacity:1;transform:none}
     </style>
 </head>
 <body>
@@ -99,19 +101,19 @@
 <th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
 
 <!-- HERO -->
-<header class="hero">
-    <h1>Câu hỏi thường gặp</h1>
-    <p>Giải đáp nhanh về sản phẩm phân hữu cơ từ bã cà phê Mầm Nâu</p>
+<header class="hero observe">
+    <h1 class="reveal">Câu hỏi thường gặp</h1>
+    <p class="reveal">Giải đáp nhanh về <strong>Mầm Xanh</strong> — phân bón hữu cơ từ vỏ trái cây thu gom ở chợ.</p>
 </header>
 
 <!-- TOOLS -->
-<section class="tools">
+<section class="tools observe">
     <div class="container grid-tools">
-        <div class="search">
+        <div class="search reveal">
             🔎
-            <input id="search" placeholder="Tìm câu hỏi: mùi, liều lượng, bảo quản…"/>
+            <input id="search" placeholder="Tìm câu hỏi: liều lượng, thành phần, bảo quản…"/>
         </div>
-        <div class="cats" id="cats">
+        <div class="cats reveal" id="cats">
             <button class="chip active" data-cat="all">Tất cả</button>
             <button class="chip" data-cat="su-dung">Sử dụng</button>
             <button class="chip" data-cat="thanh-phan">Thành phần</button>
@@ -123,91 +125,117 @@
 </section>
 
 <!-- FAQ LIST -->
-<section class="container">
+<section class="container observe">
     <div id="faqList" class="faq">
         <!-- SỬ DỤNG -->
-        <details data-cat="su-dung">
+        <details data-cat="su-dung" class="reveal">
             <summary>Liều lượng khuyến nghị khi trồng chậu là bao nhiêu?</summary>
-            <p>Trộn 10–20% thể tích đất nền hoặc rải 50–80g/chậu 25–30cm mỗi 3–4 tuần, tưới giữ ẩm sau bón.</p>
-            <span class="tag">Sử dụng</span>
+            <div class="content">
+                <p>Trộn 10–20% thể tích đất nền hoặc rải 50–80g/chậu 25–30cm mỗi 3–4 tuần; tưới giữ ẩm sau bón.</p>
+                <span class="tag">Sử dụng</span>
+            </div>
         </details>
-        <details data-cat="su-dung">
+        <details data-cat="su-dung" class="reveal">
             <summary>Có dùng trực tiếp lên mặt chậu không?</summary>
-            <p>Có thể rải mỏng và trộn nhẹ lớp mặt; tránh phủ dày lên lá non.</p>
-            <span class="tag">Sử dụng</span>
+            <div class="content">
+                <p>Có thể rải mỏng và trộn nhẹ lớp mặt; tránh phủ dày lên gốc non, lá non để không bí rễ.</p>
+                <span class="tag">Sử dụng</span>
+            </div>
         </details>
-        <details data-cat="su-dung">
-            <summary>Dùng cho rau ăn lá có an toàn?</summary>
-            <p>Phù hợp khi dùng đúng liều lượng và quy trình ủ đạt chuẩn nội bộ; rửa sạch rau trước khi ăn.</p>
-            <span class="tag">Sử dụng</span>
+        <details data-cat="su-dung" class="reveal">
+            <summary>Dùng cho rau ăn lá và cây gia vị có an toàn?</summary>
+            <div class="content">
+                <p>Phù hợp khi dùng đúng liều; sản phẩm đã ủ hiếu khí đến giai đoạn ổn định. Luôn rửa sạch rau trước khi ăn.</p>
+                <span class="tag">Sử dụng</span>
+            </div>
         </details>
 
         <!-- THÀNH PHẦN -->
-        <details data-cat="thanh-phan">
+        <details data-cat="thanh-phan" class="reveal">
             <summary>Thành phần chính là gì?</summary>
-            <p>Bã cà phê ủ hoai mục phối trộn phụ gia hữu cơ an toàn; không hoá chất tổng hợp.</p>
-            <span class="tag">Thành phần</span>
+            <div class="content">
+                <p>Vỏ trái cây (cam/quýt/chuối/dứa…) được phân loại tại nguồn, sơ chế và ủ hoai, phối trộn phụ liệu hữu cơ an toàn; không dùng hoá chất tổng hợp.</p>
+                <span class="tag">Thành phần</span>
+            </div>
         </details>
-        <details data-cat="thanh-phan">
+        <details data-cat="thanh-phan" class="reveal">
             <summary>Chỉ số N-P-K khoảng bao nhiêu?</summary>
-            <p>Ước lượng cân bằng 1-1-1 (±); có thể khác nhẹ theo lô sản xuất.</p>
-            <span class="tag">Thành phần</span>
+            <div class="content">
+                <p>Ước lượng cân bằng khoảng 1–1–1 (±), có thể dao động nhẹ theo lô nguyên liệu và thời điểm ủ.</p>
+                <span class="tag">Thành phần</span>
+            </div>
         </details>
-        <details data-cat="thanh-phan">
+        <details data-cat="thanh-phan" class="reveal">
             <summary>pH của sản phẩm?</summary>
-            <p>Khoảng 6.0–7.0, phù hợp đa số cây trồng phổ biến.</p>
-            <span class="tag">Thành phần</span>
+            <div class="content">
+                <p>Khoảng 6.0–7.0, phù hợp phần lớn cây trồng trong gia đình và vườn đô thị.</p>
+                <span class="tag">Thành phần</span>
+            </div>
         </details>
 
         <!-- BẢO QUẢN -->
-        <details data-cat="bao-quan">
+        <details data-cat="bao-quan" class="reveal">
             <summary>Bảo quản thế nào để không bị ẩm mốc?</summary>
-            <p>Đậy kín sau khi mở, để nơi khô ráo, thoáng mát; tránh ánh nắng trực tiếp.</p>
-            <span class="tag">Bảo quản</span>
+            <div class="content">
+                <p>Đậy kín sau khi mở, để nơi khô ráo thoáng mát; tránh ánh nắng gắt và nguồn ẩm trực tiếp.</p>
+                <span class="tag">Bảo quản</span>
+            </div>
         </details>
-        <details data-cat="bao-quan">
+        <details data-cat="bao-quan" class="reveal">
             <summary>Hạn sử dụng bao lâu?</summary>
-            <p>Tốt nhất dùng trong 12 tháng kể từ ngày đóng gói; chất lượng không giảm mạnh nếu bảo quản tốt.</p>
-            <span class="tag">Bảo quản</span>
+            <div class="content">
+                <p>Khuyến nghị dùng trong 12 tháng từ ngày đóng gói; chất lượng duy trì tốt nếu bảo quản đúng.</p>
+                <span class="tag">Bảo quản</span>
+            </div>
         </details>
 
         <!-- MUA HÀNG -->
-        <details data-cat="mua-hang">
+        <details data-cat="mua-hang" class="reveal">
             <summary>Có những khối lượng nào?</summary>
-            <p>1kg, 3kg (và 5kg nếu đặt trước).</p>
-            <span class="tag">Mua hàng</span>
+            <div class="content">
+                <p>1kg, 3kg (và 5kg nếu đặt trước).</p>
+                <span class="tag">Mua hàng</span>
+            </div>
         </details>
-        <details data-cat="mua-hang">
+        <details data-cat="mua-hang" class="reveal">
             <summary>Chính sách đổi trả?</summary>
-            <p>Đổi trả 7 ngày cho sản phẩm còn nguyên bao bì, xuất hoá đơn/đơn hàng.</p>
-            <span class="tag">Mua hàng</span>
+            <div class="content">
+                <p>Đổi trả trong 7 ngày cho sản phẩm còn nguyên bao bì, kèm hoá đơn/đơn hàng.</p>
+                <span class="tag">Mua hàng</span>
+            </div>
         </details>
-        <details data-cat="mua-hang">
+        <details data-cat="mua-hang" class="reveal">
             <summary>Thời gian giao hàng?</summary>
-            <p>Nội thành 24–48h; tỉnh thành 3–5 ngày làm việc tuỳ đơn vị vận chuyển.</p>
-            <span class="tag">Mua hàng</span>
+            <div class="content">
+                <p>Nội thành 24–48h; liên tỉnh 3–5 ngày làm việc tuỳ đơn vị vận chuyển.</p>
+                <span class="tag">Mua hàng</span>
+            </div>
         </details>
 
         <!-- BỀN VỮNG -->
-        <details data-cat="ben-vung">
+        <details data-cat="ben-vung" class="reveal">
             <summary>Sản phẩm có giúp giảm rác thải không?</summary>
-            <p>Có. Mỗi kg sản phẩm tái sử dụng đáng kể bã cà phê vốn bị bỏ đi, góp phần kinh tế tuần hoàn.</p>
-            <span class="tag">Bền vững</span>
+            <div class="content">
+                <p>Có. Mỗi kg sản phẩm tái sử dụng đáng kể vỏ trái cây từ chợ, giảm rác hữu cơ đem chôn lấp và phát thải.</p>
+                <span class="tag">Bền vững</span>
+            </div>
         </details>
-        <details data-cat="ben-vung">
+        <details data-cat="ben-vung" class="reveal">
             <summary>Mùi có khó chịu không?</summary>
-            <p>Sau ủ hoai mục, mùi nhẹ và tan nhanh khi trộn với đất.</p>
-            <span class="tag">Bền vững</span>
+            <div class="content">
+                <p>Sau ủ đạt độ hoai mục, mùi nhẹ, tự nhiên và tan nhanh khi trộn vào đất.</p>
+                <span class="tag">Bền vững</span>
+            </div>
         </details>
     </div>
 
     <!-- CONTACT CTA -->
-    <div class="cta-block">
-        <div>
+    <div class="cta-block observe">
+        <div class="reveal">
             <h3>Chưa thấy câu trả lời bạn cần?</h3>
-            <p class="lead" style="color: var(--muted)">Gửi câu hỏi cho Mầm Nâu, chúng tôi phản hồi sớm nhất.</p>
+            <p class="lead" style="color: var(--muted)">Gửi câu hỏi cho <strong>Mầm Xanh</strong>, chúng tôi phản hồi sớm nhất.</p>
         </div>
-        <div>
+        <div class="reveal">
             <a class="cta" th:href="@{/contact}">Liên hệ ngay</a>
         </div>
     </div>
@@ -218,43 +246,99 @@
 
 <script>
     // Navbar mobile
-    const menuBtn = document.getElementById("menuBtn");
-    const navMenu = document.getElementById("navMenu");
-    menuBtn?.addEventListener("click", () => {
-      const visible = getComputedStyle(navMenu).display !== "none";
-      navMenu.style.display = visible ? "none" : "flex";
+    const menuBtn=document.getElementById("menuBtn");
+    const navMenu=document.getElementById("navMenu");
+    menuBtn?.addEventListener("click",()=>{
+      const visible=getComputedStyle(navMenu).display!=="none";
+      navMenu.style.display=visible?"none":"flex";
     });
 
     // Year
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const yearEl=document.getElementById("year");
+    if(yearEl) yearEl.textContent=new Date().getFullYear();
 
     // Search & filter
-    const searchInput = document.getElementById("search");
-    const chips = document.querySelectorAll(".chip");
-    const list = document.getElementById("faqList");
-    const items = [...list.querySelectorAll("details")];
+    const searchInput=document.getElementById("search");
+    const chips=document.querySelectorAll(".chip");
+    const list=document.getElementById("faqList");
+    const items=[...list.querySelectorAll("details")];
 
-    let activeCat = "all";
-    chips.forEach((c) =>
-      c.addEventListener("click", () => {
-        chips.forEach((x) => x.classList.remove("active"));
-        c.classList.add("active");
-        activeCat = c.dataset.cat || "all";
-        filter();
-      })
-    );
+    let activeCat="all";
+    chips.forEach(c=>c.addEventListener("click",()=>{
+      chips.forEach(x=>x.classList.remove("active"));
+      c.classList.add("active");
+      activeCat=c.dataset.cat||"all";
+      filter();
+    }));
+    searchInput.addEventListener("input",filter);
 
-    searchInput.addEventListener("input", filter);
-
-    function filter() {
-      const q = searchInput.value.toLowerCase().trim();
-      items.forEach((it) => {
-        const inCat = activeCat === "all" || it.dataset.cat === activeCat;
-        const txt = (it.textContent || "").toLowerCase();
-        const match = !q || txt.includes(q);
-        it.style.display = inCat && match ? "block" : "none";
+    function filter(){
+      const q=(searchInput.value||"").toLowerCase().trim();
+      items.forEach(it=>{
+        const inCat=activeCat==="all"||it.dataset.cat===activeCat;
+        const txt=(it.textContent||"").toLowerCase();
+        const match=!q||txt.includes(q);
+        it.style.display=inCat&&match?"block":"none";
       });
     }
+
+    // ===== Smooth <details> expand/collapse =====
+    function setupDetailsAnimation(root=document){
+      const detailsEls=[...root.querySelectorAll("details")];
+      detailsEls.forEach(d=>{
+        // ensure content wrapper exists (in case of SSR edits)
+        const content=d.querySelector(".content");
+        if(!content) return;
+        // set height on toggle for smooth animation
+        d.addEventListener("toggle",()=>{
+          if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ // respect user setting
+            content.style.maxHeight = d.open ? "none" : "0px";
+            content.style.opacity = d.open ? "1" : "0";
+            return;
+          }
+          if(d.open){
+            content.style.maxHeight=content.scrollHeight+"px";
+            // after transition, remove max-height to allow responsive content growth
+            content.addEventListener("transitionend",function handler(e){
+              if(e.propertyName==="max-height"){ content.style.maxHeight="none"; content.removeEventListener("transitionend",handler); }
+            });
+          }else{
+            // set current height to allow animating back to 0
+            const h=content.scrollHeight;
+            content.style.maxHeight=h+"px";
+            // force reflow then set to 0
+            content.offsetHeight; // eslint-disable-line no-unused-expressions
+            content.style.maxHeight="0px";
+          }
+        });
+        // initialize closed state height = 0 (if not open)
+        if(!d.open){ content.style.maxHeight="0px"; }
+        else { content.style.maxHeight="none"; content.style.opacity="1"; }
+      });
+    }
+    setupDetailsAnimation();
+
+    // ===== Scroll-reveal (IntersectionObserver + stagger) =====
+    (function(){
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const observers=[...document.querySelectorAll('.observe')];
+      const io=new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const block=entry.target;
+            block.classList.add('in-view');
+            const kids=[...block.querySelectorAll('.reveal')];
+            kids.forEach((el,i)=>{ el.style.transitionDelay=`${Math.min(i*80,600)}ms`; });
+            io.unobserve(block);
+          }
+        });
+      },{threshold:0.15});
+      // mark top-level containers as observe if not already
+      document.querySelectorAll('header.hero, section.tools, section.container, .cta-block').forEach(el=>{
+        if(!el.classList.contains('observe')) el.classList.add('observe');
+      });
+      observers.concat().forEach(el=>io.observe(el));
+    })();
 </script>
 </body>
 </html>

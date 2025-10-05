@@ -3,81 +3,138 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title th:text="${title} ?: 'Mầm Nâu — Chi tiết sản phẩm'">Mầm Nâu — Chi tiết sản phẩm</title>
-  <meta name="description" th:content="${desc} ?: 'Trang chi tiết sản phẩm Mầm Nâu'"/>
+  <title th:text="${title} ?: 'Mầm Xanh — Chi tiết sản phẩm'">Mầm Xanh — Chi tiết sản phẩm</title>
+  <meta name="description" th:content="${desc} ?: 'Trang chi tiết sản phẩm Mầm Xanh — phân bón từ rác thải ở chợ (vỏ trái cây). Mầm xanh cho đất – Trái lành cho đời.'"/>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 
   <style>
-    :root{--bg:#f7fbf7;--surface:#fff;--text:#243522;--muted:#5b6b57;--primary:#2e7d32;--primary-200:#a8d5b8;--accent:#6b4f3b;--accent-100:#efe5db;--ring:rgba(46,125,50,.25);--shadow:0 10px 25px rgba(0,0,0,.06);--radius:16px;--maxw:980px}
+    :root{
+      --bg:#f7fbf7;--surface:#fff;--text:#243522;--muted:#5b6b57;
+      --primary:#2e7d32;--primary-200:#a8d5b8;--accent:#6b4f3b;--accent-100:#efe5db;
+      --ring:rgba(46,125,50,.25);--shadow:0 10px 25px rgba(0,0,0,.06);
+      --radius:16px;--maxw:980px
+    }
     *{box-sizing:border-box} html,body{margin:0;padding:0}
-    body{font-family:"Be Vietnam Pro",system-ui,-apple-system,Segoe UI,Roboto,Arial,"Helvetica Neue",sans-serif;background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));color:var(--text);line-height:1.6}
+    body{
+      font-family:"Be Vietnam Pro",system-ui,-apple-system,Segoe UI,Roboto,Arial,"Helvetica Neue",sans-serif;
+      background:linear-gradient(180deg,var(--bg),#fff 40%,var(--accent-100));
+      color:var(--text);line-height:1.6
+    }
     a{color:inherit;text-decoration:none}
     .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
     /* NAV */
-    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);
+      backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
     .nav-wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
     .brand{display:flex;align-items:center;gap:10px;font-weight:700}
-    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
+    .brand .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+      background:conic-gradient(from 210deg,var(--primary-200),#d7eddc);box-shadow:var(--shadow)}
     .nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
     .nav a{font-weight:600;color:var(--muted)} .nav a:hover{color:var(--primary)}
     .menu-btn{display:none;border:0;background:transparent;font-size:26px}
+
     .breadcrumbs{font-size:14px;color:var(--muted);padding:12px 0;display:flex;align-items:center;gap:6px}
+
     /* PRODUCT */
     .product{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:6px 0 20px;align-items:start}
-    .media{aspect-ratio:4/3.3;border-radius:14px;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center}
-    .media img{padding:3%;max-width:100%;max-height:170%;height:142%;object-fit:cover;border-radius:12px}
-    .summary{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+    .media{aspect-ratio:4/3.3;border-radius:14px;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);
+      border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center;
+      overflow:hidden}
+    .media img{padding:3%;max-width:100%;max-height:170%;height:142%;object-fit:cover;border-radius:12px;
+      transition:transform .6s ease}
+    .media:hover img{transform:scale(1.02)}
+
+    .summary{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:18px;box-shadow:var(--shadow);
+      transition:transform .2s ease}
+    .summary:hover{transform:translateY(-2px)}
+
     .title{font-size:clamp(22px,3.6vw,32px);line-height:1.2;margin:0 0 6px}
     .subtitle{color:var(--muted);margin:6px 0 12px}
     .price{font-weight:800;color:var(--primary);margin:8px 0 12px}
-    .label{display:inline-flex;gap:8px;align-items:center;background:#fff3cd;color:#b58100;border:1px solid #ffe69c;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .label{display:inline-flex;gap:8px;align-items:center;background:#fff3cd;color:#b58100;border:1px solid #ffe69c;
+      padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+
     .qty{display:flex;align-items:center;gap:8px;margin:14px 0}
     .qty button{width:36px;height:36px;border-radius:10px;border:1px solid #cfe4d2;background:#fff;cursor:pointer;font-weight:800}
     .qty input{height:36px;line-height:36px}
+
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:2px solid transparent;cursor:pointer;font-weight:800}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:2px solid transparent;
+      cursor:pointer;font-weight:800;transition:transform .18s ease,box-shadow .18s ease}
+    .btn:active{transform:translateY(1px)}
     .btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px var(--ring)}
     .btn-outline{border-color:var(--primary);color:var(--primary);background:transparent}
     .btn-outline:disabled{opacity:.6;cursor:not-allowed}
+
     .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-    .meta .box{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px;text-align:center;display:flex;align-items:center;justify-content:center;text-wrap:balance}
+    .meta .box{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:12px;text-align:center;
+      display:flex;align-items:center;justify-content:center;text-wrap:balance;transition:transform .2s ease}
+    .meta .box:hover{transform:translateY(-2px)}
+
     /* QUOTE */
     .quote-section{margin-top:24px}
-    .quote{max-width:var(--maxw);margin:0 auto;background:linear-gradient(135deg,#ffffff,#f2f7f3);border:1px solid rgba(0,0,0,.06);padding:24px;border-radius:16px;box-shadow:var(--shadow)}
+    .quote{max-width:var(--maxw);margin:0 auto;background:linear-gradient(135deg,#ffffff,#f2f7f3);
+      border:1px solid rgba(0,0,0,.06);padding:24px;border-radius:16px;box-shadow:var(--shadow)}
+
     .quote em{color:var(--accent);font-weight:600}
+
     /* TABS */
     .tabs{margin-top:18px;border-top:1px solid rgba(0,0,0,.06)}
-    .tablist{display:flex;gap:4px;flex-wrap:wrap}
-    .tab-btn{border:0;background:transparent;padding:12px 14px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+    .tablist{display:flex;gap:4px;flex-wrap:wrap;position:relative}
+    .tab-btn{border:0;background:transparent;padding:12px 14px;font-weight:700;color:var(--muted);
+      cursor:pointer;border-bottom:3px solid transparent;position:relative}
     .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
+    .tab-underline{position:absolute;left:0;bottom:0;height:3px;background:var(--primary);border-radius:3px;
+      transition:transform .25s ease,width .25s ease}
+
     .tab-panel{display:none;padding:16px 0}
     .tab-panel.active{display:block}
     .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
-    .card{background:var(--surface);padding:16px;border-radius:16px;border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow)}
+    .card{background:var(--surface);padding:16px;border-radius:16px;border:1px solid rgba(0,0,0,.06);
+      box-shadow:var(--shadow);transition:transform .2s ease}
+    .card:hover{transform:translateY(-2px)}
     .list{display:grid;gap:8px}
-    /* MODAL CONTACT (giữa màn hình) */
+
+    /* MODAL CONTACT */
     .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
-    .drawer{background:#fff;width:100%;max-width:560px;border-radius:16px;padding:18px 16px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.06);animation:pop .18s ease-out}
+    .drawer{background:#fff;width:100%;max-width:560px;border-radius:16px;padding:18px 16px;box-shadow:var(--shadow);
+      border:1px solid rgba(0,0,0,.06);animation:pop .18s ease-out}
     @keyframes pop{from{transform:scale(.98);opacity:.5}to{transform:scale(1);opacity:1}}
     .row{display:grid;gap:10px;margin:8px 0}
-    .row input,.row textarea{width:100%;padding:12px 14px;border:1px solid #cfe4d2;border-radius:12px;font:inherit;transition:border-color .2s, box-shadow .2s, background .2s}
+    .row input,.row textarea{width:100%;padding:12px 14px;border:1px solid #cfe4d2;border-radius:12px;
+      font:inherit;transition:border-color .2s, box-shadow .2s, background .2s}
     .row textarea{min-height:120px}
     .row .hint{font-size:12px;color:#577a59}
     .row .err{font-size:12px;color:#7a271a;display:none}
     .row [aria-invalid="true"]{border-color:#e76a5f;box-shadow:0 0 0 3px rgba(231,106,95,.18);background:#fff7f6}
-    .toast{position:fixed;left:50%;top:14px;transform:translateX(-50%);background:#0f5132;color:#d1f7e1;padding:12px 16px;border-radius:10px;border:1px solid #badbcc;box-shadow:var(--shadow);display:none;z-index:70;font-weight:700}
+    .toast{position:fixed;left:50%;top:14px;transform:translateX(-50%);background:#0f5132;color:#d1f7e1;
+      padding:12px 16px;border-radius:10px;border:1px solid #badbcc;box-shadow:var(--shadow);display:none;z-index:70;font-weight:700}
     .toast.error{background:#842029;color:#ffe0e0;border-color:#f5c2c7}
+
     /* FOOTER */
     footer{background:#0e1a0f;color:#d7e3d7;margin-top:32px}
     .footer-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:28px 0}
     .copyright{border-top:1px solid rgba(255,255,255,.1);padding:16px 0;color:#a6b5a6;font-size:14px}
+
     /* Responsive */
     @media (max-width:920px){.product{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.meta{grid-template-columns:1fr 1fr}}
-    @media (max-width:680px){.nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);padding:16px 20px;flex-direction:column}.menu-btn{display:block}.meta{grid-template-columns:1fr}}
+    @media (max-width:680px){
+      .nav ul{display:none;position:absolute;inset:64px 0 auto 0;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);
+        padding:16px 20px;flex-direction:column}
+      .menu-btn{display:block}
+      .meta{grid-template-columns:1fr}
+    }
     html{overflow-y:scroll}
+
+    /* ===== Scroll-reveal animation ===== */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal{opacity:0;transform:translateY(18px);will-change:opacity,transform}
+      .in-view .reveal{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+    }
   </style>
 </head>
 <body>
@@ -85,29 +142,31 @@
 <!-- Navbar -->
 <th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
 
-<div class="container">
-  <div class="breadcrumbs">
+<div class="container observe">
+  <div class="breadcrumbs reveal">
     <a th:href="@{/}">Trang chủ</a> / <a th:href="@{/home#san-pham}">Sản phẩm</a> /
     <span th:text="${p.name}">Tên sản phẩm</span>
   </div>
 
   <section class="product">
-    <div class="media">
+    <div class="media reveal">
       <img th:if="${p.imgUrl}" th:src="${p.imgUrl}" th:alt="${p.name}"/>
-      <div th:if="${p.imgUrl == null}">Ảnh sản phẩm Mầm Nâu</div>
+      <div th:if="${p.imgUrl == null}">Ảnh sản phẩm Mầm Xanh</div>
     </div>
 
-    <aside class="summary">
-      <h1 class="title" th:text="${p.name}">Phân hữu cơ từ bã cà phê — Mầm Nâu</h1>
-      <p class="subtitle" th:if="${p.shortDesc}" th:text="${p.shortDesc}">Mô tả ngắn…</p>
+    <aside class="summary reveal">
+      <h1 class="title" th:text="${p.name}">Phân bón từ vỏ trái cây — Mầm Xanh</h1>
+      <p class="subtitle" th:if="${p.shortDesc}" th:text="${p.shortDesc}">
+        Sản phẩm phân bón hữu cơ tái chế từ vỏ trái cây ở chợ — Mầm xanh cho đất, trái lành cho đời.
+      </p>
 
       <div class="price" th:if="${p.price != null}">
         <span th:text="${#numbers.formatDecimal(p.price, 0, 'POINT', 0, 'POINT')}">100000</span> VND
       </div>
 
-      <span class="label">⚠️ Chưa tích hợp thanh toán • Đặt qua form/liên hệ</span>
+      <span class="label reveal">⚠️ Chưa tích hợp thanh toán • Đặt qua form/liên hệ</span>
 
-      <div class="qty">
+      <div class="qty reveal">
         <strong>Số lượng ước muốn:</strong>
         <button id="minus">−</button>
         <input id="qty" type="number" value="1" min="1"
@@ -115,51 +174,52 @@
         <button id="plus">+</button>
       </div>
 
-      <div class="actions">
+      <div class="actions reveal">
         <button class="btn btn-primary" id="openContact">Liên hệ đặt hàng</button>
         <button class="btn btn-outline" id="momoBtn" disabled>Thanh toán MoMo (sắp có)</button>
       </div>
       <div class="meta">
-        <div class="box">🚚 Giao nội thành 24–48h</div>
-        <div class="box">♻️ Từ bã cà phê tái chế</div>
-        <div class="box">🌱 100% hữu cơ</div>
+        <div class="box reveal">🚚 Giao nội thành 24–48h</div>
+        <div class="box reveal">♻️ Từ vỏ trái cây tái chế</div>
+        <div class="box reveal">🌱 100% hữu cơ</div>
       </div>
     </aside>
   </section>
 </div>
 
 <!-- QUOTE -->
-<div class="quote-section">
+<div class="quote-section observe">
   <div class="container">
-    <div class="quote">
+    <div class="quote reveal">
       <p>
-        <em th:text="${#strings.defaultString(p.brandStory, #strings.defaultString(p.greenStory, '“Mỗi tách cà phê…”'))}">
+        <em th:text="${#strings.defaultString(p.brandStory, #strings.defaultString(p.greenStory, '“Mỗi quả bỏ đi ở chợ có thể hồi sinh thành dưỡng chất cho đất — Mầm xanh cho đất, trái lành cho đời.”'))}">
           Câu chuyện thương hiệu/ xanh
         </em>
       </p>
-      <small>— Câu chuyện Mầm Nâu</small>
+      <small>— Câu chuyện Mầm Xanh</small>
     </div>
   </div>
 </div>
 
-<div class="container">
+<div class="container observe">
   <section class="tabs">
-    <div class="tablist">
+    <div class="tablist reveal" id="tablist">
       <button class="tab-btn active" data-tab="mo-ta">Mô tả</button>
       <button class="tab-btn" data-tab="huong-dan">Hướng dẫn sử dụng</button>
       <button class="tab-btn" data-tab="ben-vung">Cam kết bền vững</button>
       <button class="tab-btn" data-tab="faq">FAQ</button>
+      <span class="tab-underline" id="tab-underline" style="width:0"></span>
     </div>
 
     <div id="mo-ta" class="tab-panel active">
       <div class="cards">
-        <div class="card">
+        <div class="card reveal">
           <h3>Mô tả chi tiết</h3>
-          <p th:utext="${#strings.isEmpty(p.longDesc) ? 'Phân hữu cơ từ bã cà phê ủ hoai, mùi nhẹ, phù hợp cây cảnh và rau gia vị.' : p.longDesc}">
+          <p th:utext="${#strings.isEmpty(p.longDesc) ? 'Phân bón hữu cơ từ <strong>vỏ trái cây thu gom tại chợ</strong>, được ủ hiếu khí và phối trộn an toàn; mùi nhẹ, dễ dùng cho cây cảnh, rau gia vị và nông nghiệp đô thị.' : p.longDesc}">
             Nội dung mô tả chi tiết…
           </p>
         </div>
-        <div class="card" th:if="${p.formula}">
+        <div class="card reveal" th:if="${p.formula}">
           <h3>Công thức</h3>
           <div th:utext="${p.formula}">Công thức hiển thị ở đây…</div>
         </div>
@@ -168,13 +228,13 @@
 
     <div id="huong-dan" class="tab-panel">
       <div class="cards">
-        <div class="card">
+        <div class="card reveal">
           <h3>Hướng dẫn</h3>
-          <div th:utext="${p.instructions} ?: 'Trộn 10–20% thể tích đất; rải 50–80g/chậu 25–30cm mỗi 3–4 tuần.'">
+          <div th:utext="${p.instructions} ?: 'Trộn 10–20% thể tích đất; rải 50–80g/chậu 25–30cm mỗi 3–4 tuần; tưới ẩm sau bón. Phù hợp cây kiểng, rau gia đình.'">
             Hướng dẫn sử dụng…
           </div>
         </div>
-        <div class="card" th:if="${p.notes}">
+        <div class="card reveal" th:if="${p.notes}">
           <h3>Lưu ý</h3>
           <div th:utext="${p.notes}">Lưu ý…</div>
         </div>
@@ -183,11 +243,11 @@
 
     <div id="ben-vung" class="tab-panel">
       <div class="cards">
-        <div class="card" th:if="${p.commitments}">
+        <div class="card reveal" th:if="${p.commitments}">
           <h3>Cam kết</h3>
           <div th:utext="${p.commitments}">Cam kết…</div>
         </div>
-        <div class="card" th:if="${p.greenStory}">
+        <div class="card reveal" th:if="${p.greenStory}">
           <h3>Câu chuyện xanh</h3>
           <div th:utext="${p.greenStory}">Green story…</div>
         </div>
@@ -195,15 +255,15 @@
     </div>
 
     <div id="faq" class="tab-panel">
-      <div class="card">
+      <div class="card reveal">
         <h3>Câu hỏi thường gặp</h3>
         <details>
           <summary>Có mùi không?</summary>
-          <p>Đã ủ hoai, mùi nhẹ và tan nhanh khi trộn đất.</p>
+          <p>Sản phẩm đã ủ hoai đạt chuẩn nội bộ, mùi nhẹ và tan nhanh khi trộn với đất.</p>
         </details>
         <details>
           <summary>Dùng cho rau ăn lá?</summary>
-          <p>Phù hợp khi trộn đất nền, tránh bón quá dày lên lá non.</p>
+          <p>Phù hợp khi trộn đất nền và bón đúng liều; rửa sạch rau trước khi ăn.</p>
         </details>
         <details>
           <summary>Thanh toán thế nào?</summary>
@@ -214,7 +274,7 @@
   </section>
 </div>
 
-<!-- MODAL LIÊN HỆ (giữa màn hình) -->
+<!-- MODAL LIÊN HỆ -->
 <div class="backdrop" id="drawer" aria-hidden="true">
   <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
     <h3 id="contactTitle">Liên hệ đặt hàng</h3>
@@ -272,29 +332,41 @@
     qty.value = (+qty.value || 1) + 1;
   });
 
-  // Tabs
+  // Tabs + underline animation
   const tabs = document.querySelectorAll(".tab-btn");
   const panels = document.querySelectorAll(".tab-panel");
+  const tablist = document.getElementById("tablist");
+  const underline = document.getElementById("tab-underline");
+
+  function moveUnderline(btn){
+    const rect = btn.getBoundingClientRect();
+    const parentRect = tablist.getBoundingClientRect();
+    underline.style.width = rect.width + "px";
+    underline.style.transform = `translateX(${rect.left - parentRect.left}px)`;
+  }
+  // init underline at first active
+  const initActive = document.querySelector(".tab-btn.active");
+  if (initActive) requestAnimationFrame(()=> moveUnderline(initActive));
+
   tabs.forEach((btn) => btn.addEventListener("click", () => {
     tabs.forEach((b) => b.classList.remove("active"));
     panels.forEach((p) => p.classList.remove("active"));
     btn.classList.add("active");
     document.getElementById(btn.dataset.tab).classList.add("active");
+    moveUnderline(btn);
   }));
 
-  // Modal (giữa màn hình)
+  // Modal
   const drawer = document.getElementById("drawer");
   const openContact = document.getElementById("openContact");
   const closeDrawer = document.getElementById("closeDrawer");
   const contactForm = document.getElementById("contactForm");
 
   openContact.addEventListener("click", () => {
-    // Đánh dấu request đến từ trang chi tiết
-    contactForm.dataset.from = "detail";  // <-- quan trọng
+    contactForm.dataset.from = "detail";
     drawer.style.display = "flex";
     drawer.setAttribute('aria-hidden','false');
   });
-
   closeDrawer.addEventListener("click", () => {
     drawer.style.display = "none";
     drawer.setAttribute('aria-hidden','true');
@@ -315,7 +387,7 @@
     setTimeout(()=> toast.style.display='none', 2400);
   }
 
-  // ===== Validation helpers =====
+  // ===== Validation =====
   const nameEl = document.getElementById('name');
   const phoneEl = document.getElementById('phone');
   const emailEl = document.getElementById('email');
@@ -344,7 +416,7 @@
   }
   function validateMsg(){
     const v = msgEl.value.trim();
-    if(!v){ clearErr(msgEl,'err-message'); return true; } // optional
+    if(!v){ clearErr(msgEl,'err-message'); return true; }
     const ok = v.length >= minMsg;
     ok?clearErr(msgEl,'err-message'):showErr(msgEl,'err-message'); return ok;
   }
@@ -364,7 +436,7 @@
     el.addEventListener('blur', ()=> el.dispatchEvent(new Event('input')));
   });
 
-  // Submit -> gọi API gửi mail
+  // Submit -> gọi API
   document.getElementById("contactForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -372,7 +444,7 @@
     const okEmail = validateEmail();
     const okPhone = validatePhone();
     const okAny  = validateAtLeastEmailOrPhone();
-    const okMsg  = validateMsg(); // chỉ cảnh báo nếu <10
+    const okMsg  = validateMsg();
 
     if(!(okName && okEmail && okPhone && okAny)){
       showToast("⚠️ Vui lòng kiểm tra lại thông tin.", true);
@@ -386,7 +458,7 @@
     const message = msgEl.value.trim();
     const quantity = +document.getElementById("qty").value || 1;
     const product = document.querySelector(".title")?.textContent || "";
-    const from = contactForm.dataset.from || "detail";  // <-- gửi cờ
+    const from = contactForm.dataset.from || "detail";
 
     const btn = document.querySelector('#contactForm button[type="submit"]');
     btn.disabled = true; btn.textContent = "Đang gửi...";
@@ -412,6 +484,24 @@
       btn.disabled = false; btn.textContent = "Gửi yêu cầu";
     }
   });
+
+  // ===== Scroll-reveal (IntersectionObserver + stagger) =====
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const blocks = document.querySelectorAll('.observe');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const root = entry.target;
+          root.classList.add('in-view');
+          const items = root.querySelectorAll('.reveal');
+          items.forEach((el,i)=> el.style.transitionDelay = `${Math.min(i*80, 600)}ms`);
+          io.unobserve(root);
+        }
+      });
+    }, {threshold:0.15});
+    blocks.forEach(b=> io.observe(b));
+  })();
 </script>
 </body>
 </html>

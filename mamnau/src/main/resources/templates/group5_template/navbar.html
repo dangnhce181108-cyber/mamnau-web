@@ -52,8 +52,8 @@
   <div class="container nav-wrap">
     <a class="brand" th:href="@{/}">
       <span class="logo">🌱</span>
-      <span th:text="${brandName}">Mầm Nâu</span>
-      <small th:text="${tagline}">phân hữu cơ từ bã cà phê</small>
+      <span th:text="${brandName}">Mầm Xanh</span>
+      <small th:text="${tagline}">phân bón từ vỏ trái cây </small>
     </a>
 
     <button class="menu-btn" aria-label="Mở menu" id="menuBtn">☰</button>
@@ -129,8 +129,8 @@
       });
 
       const orderBtn = document.getElementById("globalOrderBtn");
-      const backdrop = document.getElementById("g5ContactBackdrop"); // <-- CHỈ KHAI BÁO 1 LẦN
-      const closeBtn  = document.getElementById("g5Close");          // <-- CHỈ KHAI BÁO 1 LẦN
+      const backdrop = document.getElementById("g5ContactBackdrop");
+      const closeBtn  = document.getElementById("g5Close");
       const form = document.getElementById("g5ContactForm");
       const btnSubmit = document.getElementById("g5Submit");
       const toast = document.getElementById("g5Toast");
@@ -207,7 +207,7 @@
           document.querySelector(".title")?.textContent ||
           document.querySelector('meta[property="og:title"]')?.getAttribute('content') ||
           document.querySelector('h1')?.textContent ||
-          document.title || "Sản phẩm Mầm Nâu";
+          document.title || "Sản phẩm Mầm Xanh";
         form.dataset.product = (productTitle || "").trim();
 
         const qty = document.getElementById("qty");
@@ -256,7 +256,7 @@
         const phone    = phoneEl.value.trim();
         const email    = emailEl.value.trim();
         const message  = msgEl.value.trim();
-        const product  = form.dataset.product || "Sản phẩm Mầm Nâu";
+        const product  = form.dataset.product || "Sản phẩm Mầm Xanh";
         const quantity = parseInt(form.dataset.quantity||"1",10) || 1;
         const from     = form.dataset.from || 'navbar';
 

@@ -19,9 +19,9 @@ public class ContactController {
 
     @GetMapping("/contact")
     public String contact(Model model) {
-        model.addAttribute("brandName", "Mầm Nâu");
-        model.addAttribute("tagline", "phân hữu cơ từ bã cà phê");
-        return "contact"; // templates/contact.html (file bạn đã có)
+        model.addAttribute("brandName", "Mầm Xanh");
+        model.addAttribute("tagline", "phân bón từ vỏ trái cây");
+        return "contact"; // templates/contact.html
     }
 
     @PostMapping("/contact")
@@ -30,8 +30,8 @@ public class ContactController {
                                 @RequestParam("message") String message,
                                 Model model) {
         boolean ok = emailService.sendContact(name, email, message);
-        model.addAttribute("brandName", "Mầm Nâu");
-        model.addAttribute("tagline", "phân hữu cơ từ bã cà phê");
+        model.addAttribute("brandName", "Mầm Xanh");
+        model.addAttribute("tagline", "phân bón từ rác thải ở chợ (vỏ trái cây) • Mầm xanh cho đất – Trái lành cho đời");
         if (ok) {
             model.addAttribute("success", "Cảm ơn bạn! Chúng tôi đã nhận được liên hệ.");
         } else {
@@ -51,8 +51,7 @@ public class ContactController {
         String product  = str(body.get("product"));
         String message  = str(body.get("message"));
         String quantity = str(body.get("quantity")); // có thể rỗng
-        String from     = str(body.get("from"));       // lấy cờ từ frontend
-
+        String from     = str(body.get("from"));     // lấy cờ từ frontend
 
         // Validate cơ bản
         if (!StringUtils.hasText(name)) {
@@ -67,7 +66,8 @@ public class ContactController {
         if (StringUtils.hasText(product))  sb.append("🪴 Sản phẩm: ").append(esc(product)).append("\n");
         // ✅ Chỉ thêm số lượng nếu from == "detail"
         if ("detail".equalsIgnoreCase(from) && StringUtils.hasText(quantity))
-            sb.append("📦 Số lượng ước muốn: ").append(esc(quantity)).append("\n");        if (StringUtils.hasText(phone))    sb.append("📞 Điện thoại/Zalo: ").append(esc(phone)).append("\n");
+            sb.append("📦 Số lượng ước muốn: ").append(esc(quantity)).append("\n");
+        if (StringUtils.hasText(phone))    sb.append("📞 Điện thoại/Zalo: ").append(esc(phone)).append("\n");
         if (StringUtils.hasText(message))  sb.append("\n— Ghi chú của khách —\n").append(message);
 
         boolean ok = emailService.sendContactV2(name, email, sb.toString());
@@ -75,6 +75,7 @@ public class ContactController {
                 ? ResponseEntity.ok(Map.of("ok", true))
                 : ResponseEntity.status(500).body(Map.of("ok", false));
     }
+
     // ======== API cho trang Home (Gửi đăng kí) ========
     @PostMapping("/api/newsletter-signup")
     @ResponseBody
@@ -106,4 +107,3 @@ public class ContactController {
         return v.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;");
     }
 }
-

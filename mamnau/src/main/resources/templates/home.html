@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title th:text="${title} ?: 'Mầm Nâu — Phân hữu cơ từ bã cà phê'">
-    Mầm Nâu — Phân hữu cơ từ bã cà phê
+  <title th:text="${title} ?: 'Mầm Xanh — Phân hữu cơ từ vỏ trái cây'">
+    Mầm Xanh — Phân hữu cơ từ vỏ trái cây
   </title>
   <meta name="description"
-        th:content="${desc} ?: 'Mầm Nâu: Biến bã cà phê thành phân hữu cơ thân thiện môi trường cho vườn nhà và nông nghiệp đô thị.'"/>
+        th:content="${desc} ?: 'Mầm Xanh: Tái chế vỏ trái cây từ chợ thành phân hữu cơ bền vững cho vườn nhà và nông nghiệp đô thị.'"/>
 
   <link rel="icon"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E"/>
@@ -59,7 +59,7 @@
     .hero-card{background:var(--surface);padding:22px;border-radius:var(--radius);
       box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.06)}
     .hero-img{border-radius:12px;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);
-      display:grid;place-items:center;color:#3a2d22;font-weight:700}
+      display:grid;place-items:center;color:var(--text);font-weight:700}
 
     /* SECTION */
     .section{padding:56px 0}
@@ -118,36 +118,37 @@
       .cta-block{flex-direction:column;align-items:flex-start}
     }
 
+    /*SIZE ẢNH TRANG HOME*/
+    .hero-card img {
+      max-width: 100%;
+      width: 430px;
+      height: auto;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .product .media img {
+      padding: 0% 3%;
+      max-width: 100%;
+      width: 100%;
+      height: 95%;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: var(--shadow);
+    }
+    @media (max-width: 680px) {
+      .hero-card img,
+      .product .media img {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
 
-    /*SIZE ANH TRANG HOME*/
-    /* Áp dụng cho ảnh trong hero-card */
-.hero-card img {
-  max-width: 100%;
-  width: 430px;       /* Giới hạn tối đa khoảng 300–350px là vừa */
-  height: auto;
-  border-radius: 12px;
-  object-fit: cover;
-}
-
-/* Ảnh trong phần sản phẩm */
-.product .media img {
-padding : 0% 3%;
-  max-width: 100%;
-  width: 100%;       /* Tùy bạn chỉnh 300–380px */
-  height: 95%;
-  border-radius: 14px;
-  object-fit: cover;
-  box-shadow: var(--shadow);
-}
-
-/* Đảm bảo trên màn nhỏ ảnh không vượt màn hình */
-@media (max-width: 680px) {
-  .hero-card img,
-  .product .media img {
-    width: 100%;
-    max-width: 100%;
-  }
-}
+    /* ===== Scroll-reveal animation (giữ tone xanh) ===== */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity:0; transform: translateY(18px); will-change: opacity, transform; }
+      .in-view .reveal { opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease; }
+      .card:hover { transform: translateY(-2px); transition: transform .2s ease; }
+    }
   </style>
 </head>
 <body>
@@ -155,78 +156,78 @@ padding : 0% 3%;
 <th:block th:replace="~{group5_template/navbar :: navbar}"></th:block>
 
 <!-- HERO -->
-<header class="hero">
+<header class="hero observe">
   <div class="container hero-grid">
     <div>
-      <span class="badge">♻️ Từ bã cà phê → dưỡng chất cho đất</span>
-      <h1 class="title">
-        <span th:text="${brandName}">Mầm Nâu</span> — nuôi dưỡng mầm sống mới từ sắc nâu cà phê
+      <span class="badge reveal">♻️ Từ vỏ trái cây ở chợ → dưỡng chất cho đất</span>
+      <h1 class="title reveal">
+        <span th:text="${brandName}">Mầm Xanh</span> cho đất – Trái lành cho đời
       </h1>
-      <p class="subtitle">
-        Chúng tôi tái chế bã cà phê thành <strong>phân hữu cơ giàu dinh dưỡng</strong>,
-        phù hợp cho vườn nhà, ban công, và nông nghiệp đô thị. Nhẹ mùi, dễ sử dụng, thân thiện môi trường.
+      <p class="subtitle reveal">
+        Chúng tôi tái chế <strong>vỏ trái cây và phụ phẩm rau củ</strong> từ chợ thành
+        <strong>phân hữu cơ giàu dinh dưỡng</strong> cho vườn nhà và nông nghiệp đô thị. Sạch, dễ dùng, thân thiện môi trường.
       </p>
-      <div class="hero-actions">
+      <div class="hero-actions reveal">
         <a class="cta" href="#san-pham">Xem sản phẩm</a>
         <a class="ghost" href="#quy-trinh">Tìm hiểu quy trình</a>
       </div>
     </div>
-    <div class="hero-card">
+    <div class="hero-card reveal">
       <div class="hero-img">
-        <img src="/img/anhhome.jpeg" alt="Hình minh họa sản phẩm / vườn xanh">
+        <img src="/img/anhhome.jpeg" alt="Phân hữu cơ Mầm Xanh từ vỏ trái cây">
       </div>
       <div class="list" style="margin-top:12px">
-        <div class="li"><i>✔</i> Bổ sung chất hữu cơ, cải thiện cấu trúc đất</div>
-        <div class="li"><i>✔</i> Giảm rác thải cà phê, góp phần trung hòa carbon</div>
-        <div class="li"><i>✔</i> Phù hợp cây kiểng, rau gia đình, thảo mộc</div>
+        <div class="li reveal"><i>✔</i> Bổ sung mùn, cải thiện cấu trúc và độ tơi xốp của đất</div>
+        <div class="li reveal"><i>✔</i> Giảm rác hữu cơ từ chợ, thúc đẩy kinh tế tuần hoàn</div>
+        <div class="li reveal"><i>✔</i> Phù hợp rau gia đình, cây kiểng, thảo mộc, hoa</div>
       </div>
     </div>
   </div>
 </header>
 
 <!-- LỢI ÍCH -->
-<section id="loi-ich" class="section">
+<section id="loi-ich" class="section observe">
   <div class="container">
-    <h2>Lợi ích nổi bật</h2>
-    <p class="lead">UI nhẹ, sáng, nhấn mạnh câu chuyện tái chế và trách nhiệm môi trường.</p>
+    <h2 class="reveal">Lợi ích nổi bật</h2>
+    <p class="lead reveal">UI nhẹ, sáng, kể câu chuyện tái chế vỏ trái cây thành giá trị cho đất và cộng đồng.</p>
     <div class="grid-3">
-      <article class="card">
+      <article class="card reveal">
         <span class="chip">🌿 Sinh học</span>
         <h3>Giàu hữu cơ</h3>
-        <p>Bổ sung mùn, tăng khả năng giữ ẩm, hỗ trợ hệ vi sinh có lợi trong đất.</p>
+        <p>Bổ sung chất hữu cơ, tăng giữ ẩm, hỗ trợ hệ vi sinh vật có lợi trong đất.</p>
       </article>
-      <article class="card">
-        <span class="chip">🫘 Cà phê</span>
-        <h3>Tận dụng bã cà phê</h3>
-        <p>Giảm chất thải, vòng đời mới cho phụ phẩm, đúng tinh thần kinh tế tuần hoàn.</p>
+      <article class="card reveal">
+        <span class="chip">🍊 Vỏ trái cây</span>
+        <h3>Tận dụng phụ phẩm chợ</h3>
+        <p>Thu gom vỏ cam, chuối, dứa… giảm tải rác hữu cơ, tái sinh vòng đời tài nguyên.</p>
       </article>
-      <article class="card">
+      <article class="card reveal">
         <span class="chip">🛠️ Tiện dụng</span>
         <h3>Dễ dùng tại nhà</h3>
-        <p>Dạng hạt/viên/đất trộn, mùi nhẹ, sạch tay, phù hợp không gian nhỏ.</p>
+        <p>Dạng hạt/viên/đất trộn, sạch tay, mùi nhẹ, phù hợp không gian nhỏ.</p>
       </article>
     </div>
   </div>
 </section>
 
 <!-- SẢN PHẨM -->
-<section id="san-pham" class="section">
+<section id="san-pham" class="section observe">
   <div class="container product" th:if="${#lists.isEmpty(products) == false}">
-    <div class="media">
-      <img src="/img/spminhhoa.png" alt="Ảnh gói phân hữu cơ Mầm Nâu">
+    <div class="media reveal">
+      <img src="/img/spminhhoa.png" alt="Ảnh gói phân hữu cơ Mầm Xanh từ vỏ trái cây">
     </div>
     <div>
-      <h2>Sản phẩm Mầm Nâu</h2>
+      <h2 class="reveal">Sản phẩm Mầm Xanh</h2>
       <div class="list" th:each="p : ${products}">
-        <div class="li">
+        <div class="li reveal">
           <i>•</i> <strong th:text="${p.name}">Tên sản phẩm</strong>
           — <span th:text="${p.price}">100000</span> VND
         </div>
-        <div class="li" th:if="${p.shortDesc}">
+        <div class="li reveal" th:if="${p.shortDesc}">
           <i>•</i> <span th:text="${p.shortDesc}">Mô tả ngắn…</span>
         </div>
-        <div class="li">
-           <a class="ghost" th:href="@{'/san-pham/' + ${p.slug}}">Xem chi tiết →</a>
+        <div class="li reveal">
+          <a class="ghost" th:href="@{'/san-pham/' + ${p.slug}}">Xem chi tiết →</a>
         </div>
         <hr/>
       </div>
@@ -235,38 +236,38 @@ padding : 0% 3%;
 </section>
 
 <!-- QUY TRÌNH -->
-<section id="quy-trinh" class="section">
+<section id="quy-trinh" class="section observe">
   <div class="container">
-    <h2>Quy trình Mầm Nâu</h2>
-    <p class="lead">Minh bạch từ nguồn bã cà phê đến thành phẩm.</p>
+    <h2 class="reveal">Quy trình Mầm Xanh</h2>
+    <p class="lead reveal">Minh bạch từ nguồn vỏ trái cây ở chợ đến thành phẩm an toàn.</p>
     <div class="steps">
-      <div class="step"><div class="num">1</div><strong>Thu gom</strong><br/><small>Từ quán cà phê & hộ gia đình.</small></div>
-      <div class="step"><div class="num">2</div><strong>Sơ chế</strong><br/><small>Phơi/ép ẩm, loại tạp, kiểm soát mùi.</small></div>
-      <div class="step"><div class="num">3</div><strong>Ủ & phối trộn</strong><br/><small>Ủ hiếu khí + phụ gia hữu cơ an toàn.</small></div>
-      <div class="step"><div class="num">4</div><strong>Đóng gói</strong><br/><small>Kiểm tra lô, cân nặng, truy xuất.</small></div>
+      <div class="step reveal"><div class="num">1</div><strong>Thu gom</strong><br/><small>Hợp tác tiểu thương chợ; phân luồng rác tại nguồn.</small></div>
+      <div class="step reveal"><div class="num">2</div><strong>Sơ tuyển & làm sạch</strong><br/><small>Loại tạp, ép/giảm ẩm, kiểm soát mùi.</small></div>
+      <div class="step reveal"><div class="num">3</div><strong>Ủ hiếu khí & phối trộn</strong><br/><small>Kết hợp phụ liệu hữu cơ an toàn tạo mùn ổn định.</small></div>
+      <div class="step reveal"><div class="num">4</div><strong>Đóng gói & truy xuất</strong><br/><small>Kiểm định lô, cân nặng, thông tin nguồn gốc.</small></div>
     </div>
   </div>
 </section>
 
 <!-- STORY -->
-<section class="section" aria-labelledby="story">
+<section class="section observe" aria-labelledby="story">
   <div class="container">
-    <h2 id="story">Câu chuyện Mầm Nâu</h2>
-    <div class="quote">
-      <p><em>“Từ sắc nâu cà phê, chúng tôi gieo mầm xanh mới. Mỗi gói phân hữu cơ là một bước nhỏ giảm rác thải và nuôi dưỡng khu vườn Việt.”</em></p>
-      <small>— Nhóm dự án Mầm Nâu</small>
+    <h2 id="story" class="reveal">Câu chuyện Mầm Xanh</h2>
+    <div class="quote reveal">
+      <p><em>“Từ vỏ trái cây bị bỏ quên ở chợ, chúng tôi gieo mầm xanh mới cho đất. Mỗi gói phân hữu cơ là một bước nhỏ giảm rác và nuôi dưỡng khu vườn Việt.”</em></p>
+      <small>— Nhóm dự án Mầm Xanh</small>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="section" id="lien-he">
-  <div class="container cta-block">
-    <div>
+<section class="section observe" id="lien-he">
+  <div class="container cta-block reveal">
+    <div class="reveal">
       <h3>Liên hệ & dùng thử</h3>
-      <p class="lead">Để lại email, chúng tôi sẽ gửi thông tin sản phẩm thử nghiệm và ưu đãi sớm.</p>
+      <p class="lead">Để lại email, chúng tôi sẽ gửi bộ dùng thử và ưu đãi sớm cho sản phẩm “vỏ trái cây → phân hữu cơ”.</p>
     </div>
-    <form class="actions" id="ctaForm" onsubmit="return false;">
+    <form class="actions reveal" id="ctaForm" onsubmit="return false;">
       <input id="email" name="email" type="email" placeholder="Email của bạn" required
              style="padding:12px 14px;border-radius:12px;border:1px solid #cfe4d2;min-width:240px;"/>
       <button class="cta" id="signupBtn" type="submit">Đăng ký</button>
@@ -279,13 +280,43 @@ padding : 0% 3%;
 <th:block th:replace="~{group5_template/footer :: footer}"></th:block>
 
 <script>
+  // menu mobile
   const menuBtn = document.getElementById("menuBtn");
   const navMenu = document.getElementById("navMenu");
   menuBtn?.addEventListener("click", () => {
     const visible = getComputedStyle(navMenu).display !== "none";
     navMenu.style.display = visible ? "none" : "flex";
   });
-  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // năm footer
+  const y = document.getElementById("year"); if (y) y.textContent = new Date().getFullYear();
+
+  // ==== Scroll reveal with IntersectionObserver (stagger) ====
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const sections = document.querySelectorAll('.observe');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          el.classList.add('in-view');
+
+          // stagger các phần tử .reveal bên trong
+          const children = el.querySelectorAll('.reveal');
+          children.forEach((c, i) => {
+            c.style.transitionDelay = `${Math.min(i * 80, 600)}ms`;
+          });
+
+          io.unobserve(el); // chỉ reveal 1 lần
+        }
+      })
+    }, { threshold: 0.15 });
+
+    sections.forEach(s => io.observe(s));
+  })();
+
+  // CTA form
   (function () {
     const form = document.getElementById('ctaForm');
     const input = document.getElementById('email');
