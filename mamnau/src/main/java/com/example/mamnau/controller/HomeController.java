@@ -71,4 +71,13 @@ public class HomeController {
         model.addAttribute("desc", "Giới thiệu Mầm Xanh: hành trình tái chế vỏ trái cây ở chợ thành phân bón hữu cơ, sứ mệnh và tầm nhìn xanh.");
         return "about"; // templates/about.html
     }
+
+    @GetMapping("/video-huong-dan")
+    public String showVideoPage(Model model) {
+        model.addAttribute("title", "Video hướng dẫn — Mầm Xanh");
+        model.addAttribute("brandName", "Mầm Xanh");
+        model.addAttribute("tagline", "phân bón từ vỏ trái cây");
+        model.addAttribute("desc", "Video hướng dẫn sử dụng phân bón Mầm Xanh: cách pha loãng, liều lượng, lịch bón cho từng loại cây.");
+        return "video-huong-dan"; // templates/video-huong-dan.html
+    }
 }
