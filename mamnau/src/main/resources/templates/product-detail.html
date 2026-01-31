@@ -46,8 +46,16 @@
     .media{aspect-ratio:4/3.3;border-radius:14px;background:linear-gradient(135deg,#f1f5f2,#e5efe7 60%,#f9efe6);
       border:1px solid rgba(0,0,0,.06);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center;
       overflow:hidden}
-    .media img{padding:3%;max-width:100%;max-height:170%;height:142%;object-fit:cover;border-radius:12px;
-      transition:transform .6s ease}
+   .media img {
+  padding: 3%;
+  max-width: 100%;
+  max-height: 100%; /* Ensures the image height doesn't exceed the container */
+  height: auto; /* Auto height to maintain the aspect ratio */
+  object-fit: cover; /* Ensures the image covers the space without distortion */
+  border-radius: 12px; /* Rounded corners */
+  transition: transform 0.6s ease; /* Smooth zoom effect */
+}
+
     .media:hover img{transform:scale(1.02)}
 
     .summary{background:var(--surface);border:1px solid rgba(0,0,0,.06);border-radius:16px;padding:18px;box-shadow:var(--shadow);
@@ -152,8 +160,10 @@
 
   <section class="product">
     <div class="media reveal">
-      <img th:if="${p.imgUrl}" th:src="${p.imgUrl}" th:alt="${p.name}"/>
-      <div th:if="${p.imgUrl == null}">Ảnh sản phẩm Mầm Xanh</div>
+      <img th:src="@{/img/anhsanphamchitiet(1kg).png}" alt="Ảnh sản phẩm Mầm Xanh"/>
+<!--      <div th:if="${p.imgUrl == null}">-->
+<!--        <img th:src="@{/img/anhsanphamchitiet(1kg).png}" alt="Ảnh sản phẩm Mầm Xanh"/>-->
+<!--      </div>-->
     </div>
 
     <aside class="summary reveal">

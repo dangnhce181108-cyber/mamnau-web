@@ -214,7 +214,7 @@
 <section id="san-pham" class="section observe">
   <div class="container product" th:if="${#lists.isEmpty(products) == false}">
     <div class="media reveal">
-      <img src="/img/spminhhoa.png" alt="Đang cập nhật">
+      <img src="/img/mamxanh(1kg).png" alt="Đang cập nhật">
     </div>
     <div>
       <h2 class="reveal">Sản phẩm Mầm Xanh</h2>
@@ -224,7 +224,7 @@
           — <span th:text="${p.price}">100000</span> VND
         </div>
         <div class="li reveal" th:if="${p.shortDesc}">
-          <i>•</i> <span th:text="${p.shortDesc}">Mô tả ngắn…</span>
+           <span th:text="${p.shortDesc}">Mô tả ngắn…</span>
         </div>
         <div class="li reveal">
           <a class="ghost" th:href="@{'/san-pham/' + ${p.slug}}">Xem chi tiết →</a>
